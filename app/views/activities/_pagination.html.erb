@@ -1,46 +1,48 @@
-<div class="flex justify-between py-1.5 border-t" data-filters-target="pagination" data-page="<%= @page %>" data-per-page="<%= @per_page %>" data-previous-page="<%= @previous_page %>" data-next-page="<%= @next_page %>">
+<div class="fixed bottom-0 border-t w-full bg-white" data-filters-target="pagination" data-page="<%= @page %>" data-per-page="<%= @per_page %>" data-previous-page="<%= @previous_page %>" data-next-page="<%= @next_page %>">
+  <div class="flex justify-between py-1.5">
     <div class="invisible flex justify-between">
-    <% if @page > 1 %>
-      <%= link_to 'Previous', activities_path, class: 'bg-white text-gray-700 px-1 py-0.5 rounded border border-gray-300 text-sm'%>
-    <% else %>
-      <span class="cursor-pointer bg-gray-100 text-gray-400 px-1 py-0.5 rounded border border-gray-300 text-sm">Previous</span>
-    <% end %>
+      <% if @page > 1 %>
+        <%= link_to 'Previous', activities_path, class: 'bg-white text-gray-700 px-1 py-0.5 rounded border border-gray-300 text-sm'%>
+      <% else %>
+        <span class="cursor-pointer bg-gray-100 text-gray-400 px-1 py-0.5 rounded border border-gray-300 text-sm">Previous</span>
+      <% end %>
 
-    <div class="ml-2 text-sm text-gray-700 flex items-center">
-      <span><%= @from %> - <%= @to %> of <%= @total_count %></span>
+      <div class="ml-2 text-sm text-gray-700 flex items-center">
+        <span><%= @from %> - <%= @to %> of <%= @total_count %></span>
+      </div>
+
+      <% if @filter_result.next_page? %>
+        <%= link_to 'Next', activities_path, class: 'ml-2 bg-white text-gray-700 px-1 py-0.5 rounded border border-gray-300 text-sm hover:bg-gray-100'%>
+      <% else %>
+        <span class="ml-2 cursor-pointer bg-gray-100 text-gray-400 px-1 py-0.5 rounded border border-gray-300 text-sm">Next</span>
+      <% end %>
     </div>
 
-    <% if @filter_result.next_page? %>
-      <%= link_to 'Next', activities_path, class: 'ml-2 bg-white text-gray-700 px-1 py-0.5 rounded border border-gray-300 text-sm hover:bg-gray-100'%>
-    <% else %>
-      <span class="ml-2 cursor-pointer bg-gray-100 text-gray-400 px-1 py-0.5 rounded border border-gray-300 text-sm">Next</span>
-    <% end %>
-  </div>
-
-  <div class="flex justify-between">
-    <div class="flex flex-col justify-center">
-      <span class="text-xs text-gray-700">Activities per page:</span>
-    </div>
-    <div class="flex items-center ml-1 rounded-md border border-gray-300 text-gray-700 text-sm">
-      <%= select_tag 'per_page', options_for_select([10, 30, 50, 100], @per_page), class: "mx-0.5", data: { action: "change->filters#selectPerPage" } %>
-    </div>
-  </div>
-
-  <div class="flex justify-between mr-2">
-    <% if @page > 1 %>
-      <%= link_to 'Previous', activities_path, class: 'bg-white text-gray-700 px-1 py-0.5 rounded border border-gray-300 text-sm', data: { filters_target: "previousPageButton", turbo_stream: "" } %>
-    <% else %>
-      <span class="cursor-pointer bg-gray-100 text-gray-400 px-1 py-0.5 rounded border border-gray-300 text-sm">Previous</span>
-    <% end %>
-
-    <div class="ml-2 text-sm text-gray-700 flex items-center">
-      <span><%= @from %> - <%= @to %> <span class="text-gray-500">of <%= @total_count %></span></span>
+    <div class="flex justify-between">
+      <div class="flex flex-col justify-center">
+        <span class="text-xs text-gray-700">Activities per page:</span>
+      </div>
+      <div class="flex items-center ml-1 rounded-md border border-gray-300 text-gray-700 text-sm">
+        <%= select_tag 'per_page', options_for_select([10, 30, 50, 100], @per_page), class: "mx-0.5", data: { action: "change->filters#selectPerPage" } %>
+      </div>
     </div>
 
-    <% if @filter_result.next_page? %>
-      <%= link_to 'Next', activities_path, class: 'ml-2 bg-white text-gray-700 px-1 py-0.5 rounded border border-gray-300 text-sm hover:bg-gray-100', data: { filters_target: "nextPageButton", turbo_stream: "" } %>
-    <% else %>
-      <span class="ml-2 cursor-pointer bg-gray-100 text-gray-400 px-1 py-0.5 rounded border border-gray-300 text-sm">Next</span>
-    <% end %>
+    <div class="flex justify-between mr-2">
+      <% if @page > 1 %>
+        <%= link_to 'Previous', activities_path, class: 'bg-white text-gray-700 px-1 py-0.5 rounded border border-gray-300 text-sm', data: { filters_target: "previousPageButton", turbo_stream: "" } %>
+      <% else %>
+        <span class="cursor-pointer bg-gray-100 text-gray-400 px-1 py-0.5 rounded border border-gray-300 text-sm">Previous</span>
+      <% end %>
+
+      <div class="ml-2 text-sm text-gray-700 flex items-center">
+        <span><%= @from %> - <%= @to %> <span class="text-gray-500">of <%= @total_count %></span></span>
+      </div>
+
+      <% if @filter_result.next_page? %>
+        <%= link_to 'Next', activities_path, class: 'ml-2 bg-white text-gray-700 px-1 py-0.5 rounded border border-gray-300 text-sm hover:bg-gray-100', data: { filters_target: "nextPageButton", turbo_stream: "" } %>
+      <% else %>
+        <span class="ml-2 cursor-pointer bg-gray-100 text-gray-400 px-1 py-0.5 rounded border border-gray-300 text-sm">Next</span>
+      <% end %>
+    </div>
   </div>
 </div>

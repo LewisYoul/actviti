@@ -22,11 +22,11 @@
   </head>
 
   <body>
-    <div data-controller="carousel" class="flex flex-col h-screen">
+    <div data-controller="carousel" class="flex flex-col h-screen flex flex-col">
       <%= render partial: 'shared/carousel' %>
 
       <% if current_user %>
-        <div class="relative bg-white">
+        <div class="relative bg-white h-[48px]">
           <div class="flex justify-between items-center px-3 py-2 md:justify-start md:space-x-10">
             <div class="flex-1 flex items-center justify-between">
               <div class="flex">
