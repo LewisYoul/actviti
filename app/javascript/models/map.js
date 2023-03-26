@@ -15,6 +15,7 @@ export default class Map {
         if (this.isFirstMove) {
           this.isFirstMove = false
         } else {
+          console.log('going')
           this.disableFlyingToActivities()
           this.options.onMove(this.map.getBounds().toBBoxString())
         }
@@ -43,8 +44,12 @@ export default class Map {
   }
 
   addActivities(activities) {
-    this.activities = activities
-    this.layer.addData(activities.map((activity) => { return activity.summaryGeoJSON() }))
+    console.log('adding', activities)
+    console.log('to', this.activities)
+    const activitiesToAdd = activities.concat(this.activities)
+    this.removeAllActivities()
+    this.activities = activitiesToAdd
+    this.layer.addData(activitiesToAdd.map((activity) => { return activity.summaryGeoJSON() }))
 
     this.layer.setStyle({
       weight: 3,
@@ -54,7 +59,7 @@ export default class Map {
 
     this.layer.on('click', (e) => {
       const activityId = e.layer.feature.geometry.properties.id
-
+      console.log('actid', activityId)
       this.options.onActivityClick(activityId)
     })
 
@@ -63,19 +68,25 @@ export default class Map {
     }
   }
 
+  // TODO: Combine the map.js & map_controller.js to be responsible for map state? e.g. map_state_controller.js
+  removeAllActivitiesExcept(activityId) {
+    const activityToKeep = this.activities.find(activity => activity.id === activityId)
+
+    this.removeAllActivities()
+    this.addActivities([activityToKeep])
+  }
+
   removeAllActivities() {
     this.activities = []
     this.layer.remove()
     this.layer = L.geoJSON().addTo(this.map)
   }
 
-  focusActivity(activityId) {
+  highlightActivity(activityId) {
     this.layer.eachLayer((layer) => {
       const id = layer.feature.geometry.properties.id
 
       if (id === activityId) {
-        // this.map.flyToBounds(layer.getBounds(), { duration: 1, padding: [10, 10] })
-
         layer.setStyle({
           weight: 3,
           color: '#FC4C01',
@@ -89,6 +100,18 @@ export default class Map {
           color: '#6B20A8',
           opacity: 0.5
         })
+      }
+    })
+  }
+
+  focusActivity(activityId) {
+    this.fitToContainer()
+
+    this.layer.eachLayer((layer) => {
+      const id = layer.feature.geometry.properties.id
+
+      if (id === activityId) {
+        this.map.flyToBounds(layer.getBounds(), { duration: 1, padding: [10, 10] })
       }
     })
   }

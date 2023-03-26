@@ -2,7 +2,7 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="flex flex-col flex-1 id="filters" data-controller="map filters">
+<div class="flex flex-col flex-1" id="filters" data-controller="map filters" data-map-state-outlet=".stateController">
   <%= turbo_frame_tag "selected_activity" %>
 
   <div class="flex h-[calc(((100vh-48px)/3)*2)] z-40 overflow-auto">
@@ -107,7 +107,17 @@
         <%= link_to '', activities_path, class: "", data: { filters_target: "searchButton", turbo_stream: "" } %>
       </div>
     </div>
-    <%= turbo_frame_tag "panel" %>
+    <div class="hidden h-full overflow-auto px-6 py-6 bg-white z-500 w-[400px] max-w-[400px]" data-controller="lazyPanel" data-lazyPanel-state-outlet=".stateController" data-action="activityDeselected@window->lazyPanel#close">
+      <%= button_tag class: "absolute right-6 text-gray-400 hover:text-gray-500", data: { action: "click->lazyPanel#close"} do %>
+        <span class="sr-only">Close panel</span>
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" view-box="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      <% end %>
+      <div data-lazyPanel-target="wrapper"></div>
+    </div>
+    <%# <div data-controller="lazyPanel" class="h-full overflow-auto px-6 py-6 bg-white z-500 w-[400px] max-w-[400px]">
+    </div> %>
   </div>
   <% if params[:first_login] %>
     <turbo-frame id="activities" src="/activities/import">

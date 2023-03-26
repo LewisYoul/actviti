@@ -142,10 +142,12 @@ export default class extends Controller {
   }
 
   mapMoved(e) {
+    console.log('infil')
     if (!this.searchAsIMove) { return }
-
+    
     const bboxString = e.detail
-
+    
+    console.log('upfil')
     this.updateFilters({ bbox: bboxString })
   }
 
@@ -188,7 +190,7 @@ export default class extends Controller {
     updatedFilters = Object.assign(updatedFilters, newFilters)
 
     this.filters = updatedFilters
-
+    console.log('apfil')
     this.applyFilters()
   }
 

@@ -3,23 +3,34 @@ import Map from "../models/map"
 import Activity from "../models/activity"
 
 export default class extends Controller {
+  static outlets = ['state']
   static targets = ['table', 'selected', 'tableRow', 'panel']
 
   static values = {
-    selectedActivity: Object,
     activities: { type: Array, default: [] }
   }
 
   connect() {
+    this.stateController = this.stateOutlets[0]
+
     this.map = new Map('map', {
-      onActivityClick: this.toggleActivityById,
+      onActivityClick: (id) => { this.toggleActivityById(id) },
       onMove: (bbox) => { this.onMapMove(bbox, this) }
+    })
+
+    this.stateController.on('activitySelected', (id) => { this.map.highlightActivity(id) })
+    this.stateController.on('activityDeselected', () => {
+      console.log('undo')
+      this.map.blurActivities();
+
+      this.tableRowTargets.forEach((row) => {
+        row.classList.add("odd:bg-gray-50", "hover:bg-purple-100")
+        row.classList.remove("bg-purple-200")
+      })
     })
   }
 
   onMapMove(bbox, self) {
-    if (self.selectedActivityValue && Object.keys(self.selectedActivityValue).length !== 0) { return }
-
     const event = new CustomEvent('mapMoved', {
       detail: bbox
     })
@@ -27,31 +38,35 @@ export default class extends Controller {
   }
   
   activitiesValueChanged(value, previousValue) {
-    if (this.map) { this.map.removeAllActivities() }
+    if (this.map && this.stateController.selectedActivityIdValue) { this.map.removeAllActivitiesExcept(this.stateController.selectedActivityIdValue) }
 
-    const activities = this.activitiesValue.map((activity) => { return new Activity(activity, this.map) })
+    let activities = this.activitiesValue.map((activity) => { return new Activity(activity, this.map) })
+    activities = activities.filter(activity => activity.id !== this.stateController.selectedActivityIdValue)
 
     if (activities.length <= 0) { return }
 
+    
     this.map.addActivities(activities)
+    this.map.highlightActivity(this.stateController.selectedActivityIdValue)
+    this.selectActivityRow(this.stateController.selectedActivityIdValue)
   }
 
-  selectedActivityValueChanged(value, previousValue) {
-    if ((Object.keys(this.selectedActivityValue).length === 0) && previousValue === undefined) {
-      return
-    } 
-    
-    if (Object.keys(this.selectedActivityValue).length === 0) {
-      this.map.blurActivities()
+  focusActivity() {
+    this.map.focusActivity(this.stateController.selectedActivityIdValue)
+  }
 
-      this.tableRowTargets.forEach((row) => {
+  selectActivityRow(id) {
+    this.tableRowTargets.forEach((row) => {
+      const idOfCurrentRow = Number(row.dataset.activityId)
+
+      if (idOfCurrentRow === id) {
+        row.classList.remove("odd:bg-gray-50", "hover:bg-purple-100")
+        row.classList.add("bg-purple-200")
+      } else {
         row.classList.add("odd:bg-gray-50", "hover:bg-purple-100")
         row.classList.remove("bg-purple-200")
-      })
-      
-    } else {
-      this.map.focusActivity(this.selectedActivityValue.id)
-    }
+      }
+    })
   }
   
   toggleActivity(e) {
@@ -60,52 +75,51 @@ export default class extends Controller {
     this.toggleActivityById(id)
   }
 
-  toggleActivityById = (id) => {
-    let button
+  activityIsSelected(id) {
+    return this.stateController.selectedActivityIdValue === id
+  }
+
+  selectActivity(id) {
+    this.stateController.setSelectedActivityId(id)
 
     this.tableRowTargets.forEach((row) => {
       const idOfCurrentRow = Number(row.dataset.activityId)
 
       if (idOfCurrentRow === id) {
-        if (id !== this.selectedActivityValue.id) {
-          row.classList.remove("odd:bg-gray-50", "hover:bg-purple-100")
-          row.classList.add("bg-purple-200")
-
-          button = document.getElementById(`select_activity_row_${id}`)
-        } else {
-          row.classList.add("odd:bg-gray-50", "hover:bg-purple-100")
-          row.classList.remove("bg-purple-200")
-
-          button = document.getElementById(`deselect_activity_row_${id}`)
-        }
+        row.classList.remove("odd:bg-gray-50", "hover:bg-purple-100")
+        row.classList.add("bg-purple-200")
       } else {
         row.classList.add("odd:bg-gray-50", "hover:bg-purple-100")
         row.classList.remove("bg-purple-200")
       }
     })
-
-    button.click()
   }
-  
-  selectedTargetConnected(el) {
-    const selectedActivity = el.dataset.selectedActivity
 
-    if (selectedActivity) {
-      this.selectedActivityValue = JSON.parse(selectedActivity)
+  deselectActivity(id) {
+    this.stateController.clearSelectedActivityId()
+  }
+
+  // can move this out of map context
+  toggleActivityById = (id) => {
+    console.log('qqq', id)
+    console.log(this.stateController.selectedActivityIdValue)
+    if (this.activityIsSelected(id)) {
+      console.log('de')
+      this.deselectActivity(id)
     } else {
-      this.selectedActivityValue = {}
+      console.log('se')
+      this.selectActivity(id)
     }
   }
 
   tableTargetConnected(el) {
+    console.log('tab conn')
     this.activitiesValue = JSON.parse(el.dataset.activities)
-  }
 
-  panelTargetConnected() {
-    // this.map.fitToContainer()
-  }
+    if (!this.stateController) { return }
 
-  panelTargetDisconnected() {
-    // this.map.fitToContainer()
+    // Need to do this to ensure selected activity row stays highlighted
+    // even if the activitiesValue that comes back is exactly the same 
+    this.selectActivityRow(this.stateController.selectedActivityIdValue)
   }
 }

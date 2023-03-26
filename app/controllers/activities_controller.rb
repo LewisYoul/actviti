@@ -1,29 +1,29 @@
 class ActivitiesController < ApplicationController
   before_action :authenticate_user
 
-  def select
-    respond_to do |format|
-      format.turbo_stream do
-        @activity = current_user.plan_limited_activities.find_by(id: params[:id])
+  # def select
+  #   respond_to do |format|
+  #     format.turbo_stream do
+  #       @activity = current_user.plan_limited_activities.find_by(id: params[:id])
 
-        if !@activity.polyline
-          strava_activity = strava_client.activity(@activity.strava_id)
-          photos = strava_client.activity_photos(@activity.strava_id)
+  #       if !@activity.polyline
+  #         strava_activity = strava_client.activity(@activity.strava_id)
+  #         photos = strava_client.activity_photos(@activity.strava_id)
 
-          Activity.transaction do
-            photos.each do |strava_photo|
-              @activity.photos.find_or_create_by!(unique_id: strava_photo.unique_id) do |photo|
-                photo.default_photo = strava_photo.default_photo
-                photo.url = strava_photo.urls['2048']
-              end
-            end
+  #         Activity.transaction do
+  #           photos.each do |strava_photo|
+  #             @activity.photos.find_or_create_by!(unique_id: strava_photo.unique_id) do |photo|
+  #               photo.default_photo = strava_photo.default_photo
+  #               photo.url = strava_photo.urls['2048']
+  #             end
+  #           end
 
-            @activity.update!(polyline: strava_activity.map.polyline)
-          end
-        end
-      end
-    end
-  end
+  #           @activity.update!(polyline: strava_activity.map.polyline)
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
 
   def deselect
     respond_to do |format|
@@ -51,26 +51,24 @@ class ActivitiesController < ApplicationController
 
   def show
     respond_to do |format|
-      format.json do
-        activity = current_user.plan_limited_activities.find_by(id: params[:id])
+      format.html do
+        @activity = current_user.plan_limited_activities.find_by(id: params[:id])
 
-        if !activity.polyline
-          strava_activity = strava_client.activity(activity.strava_id)
-          photos = strava_client.activity_photos(activity.strava_id)
+        if !@activity.polyline
+          strava_activity = strava_client.activity(@activity.strava_id)
+          photos = strava_client.activity_photos(@activity.strava_id)
 
           Activity.transaction do
             photos.each do |strava_photo|
-              activity.photos.find_or_create_by!(unique_id: strava_photo.unique_id) do |photo|
+              @activity.photos.find_or_create_by!(unique_id: strava_photo.unique_id) do |photo|
                 photo.default_photo = strava_photo.default_photo
                 photo.url = strava_photo.urls['2048']
               end
             end
 
-            activity.update!(polyline: strava_activity.map.polyline)
+            @activity.update!(polyline: strava_activity.map.polyline)
           end
         end
-
-        render json: activity.attributes.merge(photos: activity.photos)
       end
     end
   end
