@@ -9,7 +9,7 @@
 <% end %>
 
 <%= turbo_stream.replace "panel" do %>
-  <%= turbo_frame_tag "panel", class: "h-[calc((100vh/3)*2)]" do%>
+  <%= turbo_frame_tag "panel", class: "h-full overflow-auto" do%>
     <div class="px-6 py-6 bg-white z-500" data-map-target="panel">
       <div class="w-96 max-w-96">
         <div>
