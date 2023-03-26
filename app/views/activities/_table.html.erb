@@ -1,29 +1,31 @@
-<%= turbo_frame_tag 'activities', class: "h-[calc((100vh-48px)/3)] grow-0 overflow-auto relative" do %>
-  <div class="sticky top-0 w-full flex bg-white">
-    <div class="py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-400 sm:pl-6 w-1/3">NAME</div>
-    <div class="px-2 py-2 text-left text-sm font-medium text-gray-400">DATE</div>
-    <div class="px-2 py-2 text-left text-sm font-medium text-gray-400">TYPE</div>
-    <div class="px-2 py-2 text-left text-sm font-medium text-gray-400">DIST (km)</div>
-    <div class="px-2 py-2 pr-4 text-left text-sm font-medium text-gray-400">TIME</div>
-    <div class="px-2 py-2 pr-4 text-left text-sm font-medium text-gray-400 hidden"></div>
-  </div>
-  <div class="h-[500px]">
-    <% @activities.each do |activity| %>
-      <div data-map-target="tableRow" data-action="click->map#toggleActivity" data-activity-id="<%= activity.id %>" class="flex cursor-pointer odd:bg-gray-50 hover:bg-purple-100">
-        <div class="py-1.5 pl-4 pr-3 text-sm text-gray-900 sm:pl-6 w-1/3"><%= activity.name %></div>
-        <div class="px-2 py-1.5 text-sm text-gray-900"><%= activity.start_date.strftime('%d/%m/%Y') %></div>
-        <div class="px-2 text-sm text-gray-900 text-left"><%= activity.activity_type %></div>
-        <div class="px-2 py-1.5 text-sm text-left text-gray-900"><%= (activity.distance / 1000).round(2) %></div>
-        <div class="px-2 pr-4 py-1.5 text-sm text-left text-gray-900"><%= seconds_in_words(activity.moving_time) %></div>
-        <div class="hidden">
-          <%= button_to('', { controller: :activities, action: :select, id: activity.id }, { id: "select_activity_row_#{activity.id}", data: { turbo: true }, method: :put }) %>
+<%= turbo_frame_tag 'activities', class: "h-[calc((100vh-48px)/3)] max-h-[calc((100vh-48px)/3)] relative" do %>
+  <div class="flex flex-col flex-none h-full" data-map-target="table" data-activities="<%= @activities.to_json %>">
+    <div class="w-full flex bg-white" data-map-target="table" data-activities="<%= @activities.to_json %>">
+      <div class="py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-400 sm:pl-6 w-1/3">NAME</div>
+      <div class="px-2 py-2 text-left text-sm font-medium text-gray-400">DATE</div>
+      <div class="px-2 py-2 text-left text-sm font-medium text-gray-400">TYPE</div>
+      <div class="px-2 py-2 text-left text-sm font-medium text-gray-400">DIST (km)</div>
+      <div class="px-2 py-2 pr-4 text-left text-sm font-medium text-gray-400">TIME</div>
+      <div class="px-2 py-2 pr-4 text-left text-sm font-medium text-gray-400 hidden"></div>
+    </div>
+    <div class="flex-1 overflow-auto">
+      <% @activities.each do |activity| %>
+        <div data-map-target="tableRow" data-action="click->map#toggleActivity" data-activity-id="<%= activity.id %>" class="flex cursor-pointer odd:bg-gray-50 hover:bg-purple-100">
+          <div class="py-1.5 pl-4 pr-3 text-sm text-gray-900 sm:pl-6 w-1/3"><%= activity.name %></div>
+          <div class="px-2 py-1.5 text-sm text-gray-900"><%= activity.start_date.strftime('%d/%m/%Y') %></div>
+          <div class="px-2 text-sm text-gray-900 text-left"><%= activity.activity_type %></div>
+          <div class="px-2 py-1.5 text-sm text-left text-gray-900"><%= (activity.distance / 1000).round(2) %></div>
+          <div class="px-2 pr-4 py-1.5 text-sm text-left text-gray-900"><%= seconds_in_words(activity.moving_time) %></div>
+          <div class="hidden">
+            <%= button_to('', { controller: :activities, action: :select, id: activity.id }, { id: "select_activity_row_#{activity.id}", data: { turbo: true }, method: :put }) %>
+          </div>
+          <div class="hidden">
+            <%= button_to('', { controller: :activities, action: :deselect, id: activity.id }, { id: "deselect_activity_row_#{activity.id}", data: { turbo: true }, method: :put }) %>
+          </div>
         </div>
-        <div class="hidden">
-          <%= button_to('', { controller: :activities, action: :deselect, id: activity.id }, { id: "deselect_activity_row_#{activity.id}", data: { turbo: true }, method: :put }) %>
-        </div>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
 
-  <%= render "activities/pagination" %>
+    <%= render "activities/pagination" %>
+  </div>
 <% end %>
