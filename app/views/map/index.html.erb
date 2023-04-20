@@ -19,7 +19,7 @@
         <label for="search-as-i-move" class="ml-2">Search as I move the map</label> 
       </div>
 
-      <div class="absolute ml-4 mb-4 z-500 bottom-0 left-0 flex" data-action="mapMoved@window->filters#mapMoved" id="filters">
+      <div class="absolute mb-1 ml-1 md:ml-4 md:mb-4 z-500 bottom-0 left-0 flex" data-action="mapMoved@window->filters#mapMoved" id="filters">
         <input id="searchbar" data-filters-target="search" data-action="input->filters#search" class="shadow-md whitespace-nowrap inline-flex items-center rounded-md justify-center px-2 py-1 border border-transparent shadow-sm bg-white hover:bg-gray-100 focus:outline-none"></input>
 
         <div data-controller="popover" class="flex items-center bg-white rounded-md ml-2 shadow-md relative">
@@ -100,10 +100,7 @@
           </div>
         </div>
 
-        <%= button_tag 'Clear All', type: 'button', data: { action: 'click->filters#clearFilters' }, class: "flex items-center bg-gray-200 p-2 rounded-md ml-2 shadow-md" %>
-        <%# {/*<div class="flex items-center bg-white p-2 rounded-md ml-2 shadow-md">
-          <span>Distance</span>
-        </div> */} %>
+        <%= button_tag 'Clear All', type: 'button', data: { action: 'click->filters#clearFilters' }, class: "flex items-center bg-gray-200 p-2 rounded-md ml-2 shadow-md whitespace-nowrap" %>
         <%= link_to '', activities_path, class: "", data: { filters_target: "searchButton", turbo_stream: "" } %>
       </div>
     </div>

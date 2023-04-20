@@ -1,21 +1,21 @@
 <%= turbo_frame_tag 'activities', class: "h-[calc((100vh-48px)/3)] max-h-[calc((100vh-48px)/3)] relative" do %>
   <div class="flex flex-col flex-none h-full" data-map-target="table" data-activities="<%= @activities.to_json %>">
     <div class="w-full flex bg-white">
-      <div class="py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-400 sm:pl-6 w-4/12">NAME</div>
-      <div class="px-2 py-2 text-left text-sm font-medium text-gray-400 w-2/12">DATE</div>
-      <div class="px-2 py-2 text-left text-sm font-medium text-gray-400 w-2/12">TYPE</div>
-      <div class="px-2 py-2 text-left text-sm font-medium text-gray-400 w-2/12">DIST (km)</div>
-      <div class="px-2 py-2 pr-4 text-left text-sm font-medium text-gray-400 w-2/12">TIME</div>
-      <div class="px-2 py-2 pr-4 text-left text-sm font-medium text-gray-400 hidden"></div>
+      <div class="whitespace-nowrap overflow-hidden py-2 pl-4 pr-3 text-left text-xs md:text-sm font-medium text-gray-400 sm:pl-6 w-4/12">NAME</div>
+      <div class="whitespace-nowrap overflow-hidden px-2 py-2 text-left text-xs md:text-sm font-medium text-gray-400 w-2/12">DATE</div>
+      <div class="whitespace-nowrap overflow-hidden px-2 py-2 text-left text-xs md:text-sm font-medium text-gray-400 w-2/12">TYPE</div>
+      <div class="whitespace-nowrap overflow-hidden px-2 py-2 text-left text-xs md:text-sm font-medium text-gray-400 w-2/12">DIST (km)</div>
+      <div class="hidden md:block whitespace-nowrap overflow-hidden px-2 py-2 pr-4 text-left text-xs md:text-sm font-medium text-gray-400 w-2/12">TIME</div>
+      <div class="whitespace-nowrap overflow-hidden px-2 py-2 pr-4 text-left text-xs md:text-sm font-medium text-gray-400 hidden"></div>
     </div>
     <div class="flex-1 overflow-auto">
       <% @activities.each do |activity| %>
         <div data-map-target="tableRow" data-action="click->map#toggleActivity" data-activity-id="<%= activity.id %>" class="flex cursor-pointer odd:bg-gray-50 hover:bg-purple-100">
-          <div class="py-1.5 pl-4 pr-3 text-sm text-gray-900 sm:pl-6 w-4/12"><%= activity.name %></div>
-          <div class="px-2 py-1.5 text-sm text-gray-900 w-2/12"><%= activity.start_date.strftime('%d/%m/%Y') %></div>
-          <div class="px-2 text-sm text-gray-900 text-left w-2/12"><%= activity.activity_type %></div>
-          <div class="px-2 py-1.5 text-sm text-left text-gray-900 w-2/12"><%= (activity.distance / 1000).round(2) %></div>
-          <div class="px-2 pr-4 py-1.5 text-sm text-left text-gray-900 w-2/12"><%= seconds_in_words(activity.moving_time) %></div>
+          <div class="whitespace-nowrap overflow-hidden py-1.5 pl-4 pr-3 text-xs md:text-sm text-gray-900 sm:pl-6 w-4/12"><%= activity.name %></div>
+          <div class="whitespace-nowrap overflow-hidden px-2 py-1.5 text-xs md:text-sm text-gray-900 w-2/12"><%= activity.start_date.strftime('%d/%m/%Y') %></div>
+          <div class="whitespace-nowrap overflow-hidden px-2 text-xs md:text-sm text-gray-900 text-left w-2/12"><%= activity.activity_type %></div>
+          <div class="whitespace-nowrap overflow-hidden px-2 py-1.5 text-xs md:text-sm text-left text-gray-900 w-2/12"><%= (activity.distance / 1000).round(2) %></div>
+          <div class="hidden md:block whitespace-nowrap overflow-hidden px-2 pr-4 py-1.5 text-xs md:text-sm text-left text-gray-900 w-2/12"><%= seconds_in_words(activity.moving_time) %></div>
           <div class="hidden">
             <%= button_to('', { controller: :activities, action: :select, id: activity.id }, { id: "select_activity_row_#{activity.id}", data: { turbo: true }, method: :put }) %>
           </div>
