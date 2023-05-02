@@ -38,7 +38,11 @@ export default class extends Controller {
   }
   
   activitiesValueChanged(value, previousValue) {
-    if (this.map && this.stateController.selectedActivityIdValue) { this.map.removeAllActivitiesExcept(this.stateController.selectedActivityIdValue) }
+    if (this.map && this.stateController.selectedActivityIdValue) {
+      this.map.removeAllActivitiesExcept(this.stateController.selectedActivityIdValue)
+    } else if (this.map) {
+      this.map.removeAllActivities()
+    }
 
     let activities = this.activitiesValue.map((activity) => { return new Activity(activity, this.map) })
     activities = activities.filter(activity => activity.id !== this.stateController.selectedActivityIdValue)
