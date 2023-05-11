@@ -11,8 +11,6 @@ export default class extends Controller {
   connect() {
     L.DomEvent.disableClickPropagation(this.popoverTarget)
     L.DomEvent.disableScrollPropagation(this.popoverTarget)
-
-    this.updateTriggerText()
   }
   
   toggle() {
@@ -31,15 +29,6 @@ export default class extends Controller {
     // click to close the popover.
     if (!contains && e.isTrusted) {
       this.popoverTarget.classList.add('hidden')
-    }
-  }
-  
-  updateTriggerText(text = null) {
-    console.log(text)
-    if (text) {
-      this.textTarget.innerHTML = text
-    } else {
-      this.textTarget.innerHTML = this.textValue
     }
   }
 }

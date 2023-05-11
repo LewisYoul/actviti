@@ -91,30 +91,6 @@ export default class extends Controller {
     }
   }
 
-  pageValueChanged() {
-    console.log('page val', this.pageValue)
-  }
-
-  checkboxChanged() {
-    let activityTypes = []
-
-    this.checkboxTargets.forEach((checkbox) => {
-      if (checkbox.checked) {
-        activityTypes = activityTypes.concat(checkbox.value)
-      }
-    })
-
-    this.filters.activity_types = activityTypes
-
-    const selectedTypesCount = activityTypes.length
-
-    if (selectedTypesCount > 0) {
-      this.typeButtonTarget.innerText = `Type (${selectedTypesCount})`
-    } else {
-      this.typeButtonTarget.innerText = 'Type'
-    }
-  }
-
   search = debounce((event) => {
     this.filters.name = event.target.value
 
@@ -125,16 +101,6 @@ export default class extends Controller {
     const params = this.buildParams(this.filters)
     this.searchButtonTarget.href = `/activities?${params}`
     this.searchButtonTarget.click()
-  }
-
-  clearCheckboxes() {
-    this.checkboxTargets.forEach((checkbox) => { checkbox.checked = false })
-    this.checkboxChanged()
-  }
-
-  selectAllCheckboxes() {
-    this.checkboxTargets.forEach((checkbox) => { checkbox.checked = true })
-    this.checkboxChanged()
   }
 
   toggleSearchAsIMove(e) {
@@ -151,34 +117,14 @@ export default class extends Controller {
     this.updateFilters({ bbox: bboxString })
   }
 
-  clearFilters() {
-    this.filters = { page: 1, per_page: this.perPageValue }
-    this.searchTarget.value = ''
-    const params = this.buildParams(this.filters)
-    this.searchButtonTarget.href = `/activities?${params}`
-    this.searchButtonTarget.click()
-    this.picker.clearSelection()
-    document.getElementById('datepicker').innerText = "Date"
-
-
-    this.typeButtonTarget.innerText = 'Type'
-    this.clearCheckboxes()
-
-    this.filterTargets.forEach(filterTarget => {
-      const event = new CustomEvent('resetFilters')
-
-      filterTarget.dispatchEvent(event)
-    })
-  }
-
   buildParams(data) {
     const params = new URLSearchParams()
 
     Object.entries(data).forEach(([key, value]) => {
       if (Array.isArray(value)) {
-          value.forEach(value => params.append(`${key}[]`, value.toString()))
+        value.forEach(value => params.append(`${key}[]`, value.toString()))
       } else {
-          params.append(key, value.toString())
+        params.append(key, value.toString())
       }
     });
 
@@ -190,15 +136,13 @@ export default class extends Controller {
     updatedFilters = Object.assign(updatedFilters, newFilters)
 
     this.filters = updatedFilters
-    console.log('apfil')
     this.applyFilters()
   }
 
   refreshActivities() {
     axios.get('/activities/refresh')
       .then(() => {
-        console.log('boop', this.filtersOutlets)
-        this.clearFilters()
+        this.applyFilters()
       })
       .catch(console.error)
   }

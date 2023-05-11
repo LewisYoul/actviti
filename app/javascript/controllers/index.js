@@ -14,6 +14,7 @@ import LazyModalController from "./lazy_modal_controller"
 import LazyPanelController from "./lazy_panel_controller"
 import TabsController from "./tabs_controller"
 import BrowserSearchController from "./browser_search_controller"
+import MapFilterController from "./map_filter_controller"
 
 application.register("filterableList", FilterableListController)
 application.register("filters", FiltersController)
@@ -26,3 +27,4 @@ application.register("lazyModal", LazyModalController)
 application.register("lazyPanel", LazyPanelController)
 application.register("tabs", TabsController)
 application.register("browserSearch", BrowserSearchController)
+application.register("mapFilter", MapFilterController)

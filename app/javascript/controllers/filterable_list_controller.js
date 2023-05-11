@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['search', 'item']
+  static targets = ['search', 'item', 'checkbox']
 
   static values = {}
 
@@ -19,5 +19,28 @@ export default class extends Controller {
         item.classList.add('hidden')
       }
     })
+  }
+
+  clearAll() {
+    this.checkboxTargets.forEach((checkbox) => {
+      checkbox.checked = false
+    })
+
+    this.searchTarget.value = ''
+
+    this.search()
+  }
+
+  emitFilterChange() {
+    let selectedValues = []
+
+    this.checkboxTargets.forEach((checkbox) => {
+      if (checkbox.checked) {
+        selectedValues.push(checkbox.value)
+      }
+    })
+
+    this.dispatch('change', { detail: selectedValues })
+    console.log('selectedValues', selectedValues)
   }
 }

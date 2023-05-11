@@ -3,22 +3,16 @@ import noUiSlider from 'nouislider';
 import wNumb from "wnumb";
 
 export default class extends Controller {
-  static outlets = [ "filters", "popover" ]
-
   static targets = ['min', 'max', 'slider']
 
   static values = {
     min: Number,
     max: Number,
-    minName: String,
-    maxName: String,
     step: Number,
     decimalPlaces: Number
   }
 
   connect() {
-    this.filterOutlet = this.filtersOutlets[0]
-
     noUiSlider.create(this.sliderTarget, {
       start: [this.minValue, this.maxValue],
       connect: true,
@@ -38,22 +32,22 @@ export default class extends Controller {
     })
     
     this.sliderTarget.noUiSlider.on('change', (values) => {
-      const [min, max] = values
+      // const [min, max] = values
 
-      let filters = {}
-
-      filters[this.minNameValue] = min
-      filters[this.maxNameValue] = max
-
-      this.filterOutlet.updateFilters(filters)
-
-      if (Number(min) === this.minValue && Number(max) === this.maxValue) {
-        this.updateTriggerText()
-      } else {
-        const [minText, maxText] = this.generateSliderText(min, max)
-
-        this.updateTriggerText(`${minText} to ${maxText}`)
+      // let text = null
+      
+      // if (Number(min) === this.minValue && Number(max) === this.maxValue) {
+      //   text = null
+      // } else {
+      //   const [minText, maxText] = this.generateSliderText(min, max)
+      //   text = `${minText} to ${maxText}`
+      // }
+      const defaults = {
+        min: this.minValue,
+        max: this.maxValue,
       }
+
+      this.dispatch('change', { detail: { values, defaults } })
     })
 
     this.reset()
@@ -75,8 +69,8 @@ export default class extends Controller {
         maxText = `${max[0]}h 30m`
       }
     } else {
-      minText = Number(min)
-      maxText = Number(max) === this.maxValue ? `> ${this.maxValue}` : Number(max)
+      minText = `${min}km`
+      maxText = Number(max) === this.maxValue ? `> ${this.maxValue}km` : `${max}km`
     }
 
     return [minText, maxText]
@@ -89,13 +83,9 @@ export default class extends Controller {
     this.maxTarget.innerHTML = maxText
   }
 
-  updateTriggerText(text = null) {
-    this.popoverOutlets[0].updateTriggerText(text)
-  }
-
+  // not in use
   reset() {
     this.sliderTarget.noUiSlider.reset()
     this.setSliderValues(this.minValue, this.maxValue)
-    this.updateTriggerText()
   }
 }

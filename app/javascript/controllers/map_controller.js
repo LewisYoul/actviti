@@ -117,8 +117,9 @@ export default class extends Controller {
   }
 
   tableTargetConnected(el) {
-    console.log('tab conn')
+    console.log('before parse')
     this.activitiesValue = JSON.parse(el.dataset.activities)
+    console.log('after parse')
 
     if (!this.stateController) { return }
 

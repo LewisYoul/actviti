@@ -19,88 +19,18 @@
         <label for="search-as-i-move" class="ml-2">Search as I move the map</label> 
       </div>
 
+
       <div class="absolute mb-1 ml-1 md:ml-4 md:mb-4 z-500 bottom-0 left-0 flex" data-action="mapMoved@window->filters#mapMoved" id="filters">
         <input id="searchbar" data-filters-target="search" data-action="input->filters#search" class="shadow-md whitespace-nowrap inline-flex items-center rounded-md justify-center px-2 py-1 border border-transparent shadow-sm bg-white hover:bg-gray-100 focus:outline-none"></input>
 
-        <div data-controller="popover" class="flex items-center bg-white rounded-md ml-2 shadow-md relative">
-          <div
-            data-action="click->popover#toggle"
-            data-popover-target="trigger"
-            class="flex items-center p-2 cursor-pointer"
-          >
-            <button data-filters-target="typeButton">
-              Type
-            </button>
-          </div>
-          <div
-            data-controller="filterableList"
-            data-popover-target="popover"
-            data-action="click@window->popover#close"
-            class="hidden bg-white absolute left-0 bottom-10 w-48 z-600 shadow-md rounded-md px-2 py-2"
-          >
-            <div class="relative">
-              <input class="w-full border-b border-gray-400 py-1 pl-1" data-filterableList-target="search" data-action="input->filterableList#search" type="text"></input>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                  <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
-            <div class="overflow-y-scroll h-48 mt-1 px-1">
-              <% @activity_types.each do |activity_type| %>
-                <div data-filterableList-target="item" data-item-value="<%= activity_type %>" class="hover:text-gray-600 flex items-center">
-                  <input data-action="change->filters#checkboxChanged" data-filters-target="checkbox" id="<%= activity_type.downcase %>" type="checkbox" value="<%= activity_type %>"></input>
-                  <label for="<%= activity_type.downcase %>" class="w-full ml-1 cursor-pointer"><%= activity_type %></label>
-                </div>
-              <% end %>
-            </div>
-            <div class="mt-2 flex justify-between">
-                <button class="hover:underline font-medium" data-action="click->filters#selectAllCheckboxes">All</button>
-              <div>
-                <button class="hover:underline" data-action="click->filters#clearCheckboxes">Clear</button>
-                <button class="ml-2 hover:underline font-medium" data-action="click->filters#applyFilters">Apply</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <%= render partial: 'shared/map_filters/multi_select_filter', locals: { label: 'Type', filter_key: 'activity_types', items: @activity_types } %>
 
         <button id="datepicker" class="ml-1 rounded-md shadow-md py-2 px-2 cursor-pointer bg-white">Date</button>
 
-        <div
-          id="distance-popover"
-          data-controller="popover"
-          data-popover-text-value="Distance"
-          class="flex items-center bg-white rounded-md ml-2 shadow-md relative"
-          >
-          <div
-            data-action="click->popover#toggle"
-            class="flex items-center p-2 cursor-pointer"
-          >
-            <button data-popover-target="text"></button>
-          </div>
-          <div data-popover-target="popover" data-action="click@window->popover#close" class="hidden bg-white absolute left-0 bottom-10 z-600 shadow-md rounded-md p-3 w-48">
-            <%= render partial: 'shared/range_slider', locals: { id: 'distance', label: 'Distance (km)', min: 0, max: 80, min_name: 'min_distance', max_name: 'max_distance', step: 2, decimal_places: 0 } %>
-          </div>
-        </div>
+        <%= render partial: 'shared/map_filters/range_slider_filter', locals: { label: 'Distance', filter_key: 'distance', min: 0, max: 80, step: 2, decimal_places: 0, parser: 'km' } %>
+        <%= render partial: 'shared/map_filters/range_slider_filter', locals: { label: 'Duration', filter_key: 'duration', min: 0, max: 6, step: 0.5, decimal_places: 1, parser: 'hours' } %>
+        <%= render partial: 'shared/map_filters/multi_select_filter', locals: { label: 'Group', filter_key: 'group_ids', items: @groups_for_filter } %>
 
-        <div
-          id="duration-popover"
-          data-controller="popover"
-          data-popover-text-value="Duration"
-          class="flex items-center bg-white rounded-md ml-2 shadow-md relative"
-          >
-          <div
-            data-action="click->popover#toggle"
-            class="flex items-center p-2 cursor-pointer"
-          >
-            <button data-popover-target="text"></button>
-          </div>
-          <div data-popover-target="popover" data-action="click@window->popover#close" class="hidden bg-white absolute left-0 bottom-10 z-600 shadow-md rounded-md p-3 w-48">
-            <%= render partial: 'shared/range_slider', locals: { id: 'duration', label: 'Duration', min: 0, max: 6, min_name: 'min_duration', max_name: 'max_duration', step: 0.5, decimal_places: 1 } %>
-          </div>
-        </div>
-
-        <%= button_tag 'Clear All', type: 'button', data: { action: 'click->filters#clearFilters' }, class: "flex items-center bg-gray-200 p-2 rounded-md ml-2 shadow-md whitespace-nowrap" %>
         <%= link_to '', activities_path, class: "", data: { filters_target: "searchButton", turbo_stream: "" } %>
       </div>
     </div>

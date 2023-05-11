@@ -11,6 +11,7 @@ module ActivityServices
     def call
       @activities = @activities.where("name ILIKE ?", "%#{name}%") if name
       @activities = @activities.where(activity_type: activity_types) if activity_types.any?
+      @activities = @activities.joins(:activity_groups).where(activity_groups: { group_id: group_ids }).distinct if group_ids.any?
       @activities = @activities.where("DATE_TRUNC('day', start_date) >= ?", start_date) if start_date
       @activities = @activities.where("DATE_TRUNC('day', start_date) <= ?", end_date) if end_date
       @activities = @activities.where("distance > ?", min_distance) if min_distance
@@ -65,6 +66,10 @@ module ActivityServices
 
     def activity_types
       @activity_types ||= Array.wrap(@params[:activity_types]).compact.reject(&:blank?)
+    end
+
+    def group_ids
+      @group_ids ||= Array.wrap(@params[:group_ids])
     end
 
     def min_distance

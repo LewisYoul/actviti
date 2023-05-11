@@ -1,0 +1,21 @@
+<div
+  id="duration-popover"
+  data-controller="popover mapFilter"
+  data-mapFilter-filter-key-value="<%= filter_key %>"
+  data-mapFilter-label-value="<%= label %>"
+  <% if defined?(parser) %>
+    data-mapFilter-parser-value="<%= parser %>"
+  <% end %>
+  data-filters-target="filter"
+  data-mapFilter-filters-outlet="#filters"
+  class="flex items-center bg-white rounded-md ml-2 shadow-md relative"
+>
+  <div data-action="click->popover#toggle" class="flex items-center p-2 cursor-pointer">
+    <button data-mapFilter-target="text"><%= label %></button>
+  </div>
+  <div data-popover-target="popover" data-action="click@window->popover#close" class="hidden bg-white absolute left-0 bottom-10 z-600 shadow-md rounded-md p-3 w-48">
+    <div data-action="rangeSlider:change->mapFilter#propagateRangeSliderFilterChange filterableList:change->mapFilter#propagateFilterChange">
+      <%= yield %>
+    </div>
+  </div>
+</div>
