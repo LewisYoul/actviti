@@ -13,9 +13,11 @@
   <div data-action="click->popover#toggle" class="flex items-center p-2 cursor-pointer">
     <button data-mapFilter-target="text"><%= label %></button>
   </div>
-  <div data-popover-target="popover" data-action="click@window->popover#close" class="hidden bg-white absolute left-0 bottom-10 z-600 shadow-md rounded-md p-3 w-48">
-    <div data-action="rangeSlider:change->mapFilter#propagateRangeSliderFilterChange filterableList:change->mapFilter#propagateFilterChange">
-      <%= yield %>
-    </div>
+  <div data-popover-target="popover" data-action="click@window->popover#close" class="hidden">
+      <div data-action="click->popover#forceClose" class="fixed md:hidden top-0 left-0 h-full w-full bg-gray-500 opacity-75">
+      </div>
+      <div class="bg-white fixed md:absolute left-0 bottom-0 md:bottom-10 z-600 shadow-md md:rounded-md p-3 w-full md:w-48" data-action="rangeSlider:change->mapFilter#propagateRangeSliderFilterChange filterableList:change->mapFilter#propagateFilterChange">
+        <%= yield %>
+      </div>
   </div>
 </div>

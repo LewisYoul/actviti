@@ -20,6 +20,10 @@ export default class extends Controller {
       this.popoverTarget.classList.add('hidden')
     }
   }
+
+  forceClose() {
+    this.popoverTarget.classList.add('hidden')
+  }
   
   close(e) {
     const contains = this.element.contains(e.target)
