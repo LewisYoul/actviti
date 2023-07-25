@@ -32,6 +32,13 @@ body {
   text-decoration-color: #fc4c02;
 }
 
+.leaflet-bottom {
+  z-index: 400 !important;
+}
+
+.leaflet-top {
+  z-index: 400 !important;
+}
 /* BUTTONS */
 
 .button-primary {
