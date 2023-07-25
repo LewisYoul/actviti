@@ -11,7 +11,7 @@
   class="flex items-center bg-white rounded-md ml-2 shadow-md relative"
 >
   <div data-action="click->popover#toggle" class="flex items-center p-2 cursor-pointer">
-    <button data-mapFilter-target="text"><%= label %></button>
+    <button data-mapFilter-target="text" class="text-xs"><%= label %></button>
   </div>
   <div data-popover-target="popover" data-action="click@window->popover#close" class="hidden">
       <div data-action="click->popover#forceClose" class="fixed md:hidden top-0 left-0 h-full w-full bg-gray-500 opacity-75">
