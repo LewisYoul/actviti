@@ -13,11 +13,6 @@
         </svg>
         <span class="ml-1">Refresh Activities</span>
       </button>
-
-      <div class="shadow-md absolute mt-4 mr-4 z-500 top-0 left-1/2 -translate-x-1/2  whitespace-nowrap inline-flex items-center justify-center px-2 py-1 border border-transparent rounded-md shadow-sm text-base font-medium bg-white hover:bg-gray-100 text-gray-600 font-sans">
-        <input id="search-as-i-move" class="w-4 h-4" type="checkbox" data-action="change->filters#toggleSearchAsIMove">
-        <label for="search-as-i-move" class="ml-2">Search as I move the map</label> 
-      </div>
       
       <div class="overflow-auto md:overflow-visible w-full absolute mb-1 px-1 md:ml-1 md:mb-2 z-500 bottom-0 left-0 flex" data-action="mapMoved@window->filters#mapMoved" id="filters">
         <input id="searchbar" data-filters-target="search" data-action="input->filters#search" class="shadow-md whitespace-nowrap inline-flex items-center rounded-md justify-center px-2 py-1 border border-transparent shadow-sm bg-white hover:bg-gray-100 focus:outline-none"></input>

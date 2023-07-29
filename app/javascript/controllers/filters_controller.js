@@ -22,7 +22,6 @@ export default class extends Controller {
   }
 
   initialize() {
-    this.searchAsIMove = false
     this.filters = {
       name: '',
       activity_types: []
@@ -103,14 +102,7 @@ export default class extends Controller {
     this.searchButtonTarget.click()
   }
 
-  toggleSearchAsIMove(e) {
-    this.searchAsIMove = e.target.checked
-  }
-
   mapMoved(e) {
-    console.log('infil')
-    if (!this.searchAsIMove) { return }
-    
     const bboxString = e.detail
     
     console.log('upfil')
