@@ -10,7 +10,7 @@
           <%= button_to 'Cancel Subscription', subscription_path(current_user.subscription), method: :put, form: { data: { turbo_confirm: @subscription_presenter.cancel_confirmation_text } }, class: "cursor-pointer py-1 px-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
         <% end %>
       <% else %>
-        <%= link_to 'Upgrade to Pro', upgrade_plan_path(@pro_plan), class: "cursor-pointer py-1 px-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        <%= link_to 'Upgrade to Pro', upgrade_plan_path(@pro_plan), data: { turbo: false }, class: "cursor-pointer py-1 px-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
       <% end %>
     </div>
   </div>
