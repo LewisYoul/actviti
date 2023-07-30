@@ -1,5 +1,5 @@
 <%= turbo_frame_tag 'activities', class: "h-[calc((100vh-48px)/3)] max-h-[calc((100vh-48px)/3)] relative" do %>
-  <div class="flex flex-col flex-none h-full" data-map-target="table" data-activities="<%= @activities.to_json %>">
+  <div class="flex flex-col flex-none h-full" data-map-target="table" data-activities="<%= @activities.includes(:photos).map { |a| ::ActivitySerializer.new(a).to_h }.to_json %>">
     <div class="w-full flex bg-white">
       <div class="whitespace-nowrap overflow-hidden py-2 pl-4 pr-3 text-left text-xs md:text-sm font-medium text-gray-400 sm:pl-6 w-4/12">NAME</div>
       <div class="whitespace-nowrap overflow-hidden px-2 py-2 text-left text-xs md:text-sm font-medium text-gray-400 w-2/12">DATE</div>

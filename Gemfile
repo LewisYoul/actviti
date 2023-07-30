@@ -48,7 +48,10 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 
 # strava api client
-gem 'strava-ruby-client'
+gem 'strava-ruby-client', git: 'https://github.com/LewisYoul/strava-ruby-client.git', branch: 'reinstate-activity-photos-endpoint'
+
+# serialization
+gem 'active_model_serializers', '~> 0.10.0'
 
 # Use Sass to process CSS
 # gem "sassc-rails"

@@ -14,7 +14,22 @@ class StravaClient
   end
 
   def activity_photos(activity_strava_id)
-    with_token_refresh { client.activity_photos(activity_strava_id, { id: activity_strava_id, photo_sources: true, size: 2048 }) }
+    with_token_refresh do
+      photos_full = client.activity_photos(activity_strava_id, { id: activity_strava_id, photo_sources: true, size: 2048 })
+      photos_thumbnail = client.activity_photos(activity_strava_id, { id: activity_strava_id, photo_sources: true, size: 96 })
+      
+      photos_full.map! do |photo|
+        id = photo["unique_id"]
+
+        thumbnail_photo = photos_thumbnail.find { |thumbnail_photo| thumbnail_photo["unique_id"] == id }
+        photo['urls']['96'] = thumbnail_photo.urls['96']
+        photo['sizes']['96'] = thumbnail_photo.sizes['96']
+
+        photo
+      end
+
+      photos_full
+    end
   end
 
   private

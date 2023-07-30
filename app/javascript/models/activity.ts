@@ -10,55 +10,14 @@ export default class Activity {
   map: any;
   layer: any;
   id: string;
+  photos: Array<object>;
   constructor(activity: any, map: any) {
     this.activity = activity;
     this.map = map;
     this.layer = L.geoJSON(this.summaryGeoJSON())
     this.layer.properties = { id: activity.id }
     this.id = activity.id
-  }
-
-  emojis = {
-    alpineski: "⛷️",
-    backcountryski: "🌲⛷️",
-    canoeing: "🚣🏿‍♀️",
-    crossfit: "👟🏋️",
-    ebikeride: "⚡🚲",
-    elliptical: "👟🚲",
-    emountainbikeride: "⚡🚵",
-    golf: "🏌️",
-    gravelride: "🪨🚲",
-    handcycle: "✋🚲",
-    hike: "🥾",
-    iceskate: "⛸️",
-    inlineskate: "🛼",
-    kayaking: "🛶",
-    kitesurf: "🪁🏄",
-    mountainbikeride: "🚵",
-    nordicski: "🇳🇴⛷️",
-    ride: "🚲",
-    rockclimbing: "🧗",
-    rollerski: "🛼⛷️",
-    rowing: "🚣",
-    run: "👟",
-    sail: "⛵",
-    skateboard: "🛹",
-    snowboard: "🏂",
-    snowshoe: "❄️🥾",
-    soccer: "⚽",
-    stairstepper: "🪜",
-    standuppaddling: "🧍🛶",
-    swim: "🏊",
-    trailrun: "🌲👟",
-    velomobile: "🚲🚗",
-    virtualride: "🖥️🚲",
-    virtualrun: "🖥️👟",
-    walk: "👞",
-    weighttraining: "🏋️",
-    wheelchair: "🦽",
-    windsurf: "🌬️🏄",
-    workout: "🎽",
-    yoga: "🧘"
+    this.photos = activity.photos
   }
 
   update(activity: any) {

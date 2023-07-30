@@ -32,6 +32,7 @@ export default class Map {
     }).addTo(this.map);
 
     this.layer = L.geoJSON().addTo(this.map)
+    this.markerLayer = new L.LayerGroup().addTo(this.map)
     this.activities = []
   }
 
@@ -51,10 +52,26 @@ export default class Map {
     this.activities = activitiesToAdd
     this.layer.addData(activitiesToAdd.map((activity) => { return activity.summaryGeoJSON() }))
 
+    this.activities.forEach(activity => {
+      activity.photos.forEach(photo => {
+        if (photo.latlng) {
+          const icon = L.icon({
+            iconUrl: photo.thumbnail_url,
+        
+            iconSize:     [40, 40], // size of the icon
+            iconAnchor:   [20, 40], // point of the icon which will correspond to marker's location
+          });
+  
+          const marker = L.marker(photo.latlng, {icon: icon});
+          marker.addTo(this.markerLayer)
+        }
+      })
+    })
+
     this.layer.setStyle({
       weight: 3,
       color: '#6B20A8',
-      opacity: 1.0
+      opacity: 0.5
     })
 
     this.layer.on('click', (e) => {
@@ -80,6 +97,13 @@ export default class Map {
     this.activities = []
     this.layer.remove()
     this.layer = L.geoJSON().addTo(this.map)
+    this.resetMarkerLayer()
+  }
+  
+  resetMarkerLayer() {
+    this.markerLayer.clearLayers()
+    this.markerLayer.remove()
+    this.markerLayer = new L.LayerGroup().addTo(this.map)
   }
 
   highlightActivity(activityId) {

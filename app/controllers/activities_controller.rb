@@ -63,6 +63,8 @@ class ActivitiesController < ApplicationController
               @activity.photos.find_or_create_by!(unique_id: strava_photo.unique_id) do |photo|
                 photo.default_photo = strava_photo.default_photo
                 photo.url = strava_photo.urls['2048']
+                photo.thumbnail_url = strava_photo.urls['96']
+                photo.latlng = strava_photo.location
               end
             end
 
