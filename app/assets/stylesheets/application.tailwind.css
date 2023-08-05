@@ -32,7 +32,7 @@ body {
   text-decoration-color: #fc4c02;
 }
 
-.leaflet-bottom {
+/* .leaflet-bottom {
   z-index: 400 !important;
 }
 
@@ -43,6 +43,11 @@ body {
 .leaflet-marker-icon {
   padding: 2px !important;
   background-color: white !important;
+} */
+
+.leaflet-div-icon {
+  border: none !important;
+  background: none !important;
 }
 
 /* BUTTONS */

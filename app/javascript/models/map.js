@@ -1,4 +1,7 @@
 import L from 'leaflet'
+import 'leaflet.markercluster'
+import 'leaflet.markercluster/dist/MarkerCluster.css'
+// import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 
 export default class Map {
   constructor(id, options) {
@@ -32,7 +35,6 @@ export default class Map {
     }).addTo(this.map);
 
     this.layer = L.geoJSON().addTo(this.map)
-    this.markerLayer = new L.LayerGroup().addTo(this.map)
     this.activities = []
   }
 
@@ -52,21 +54,48 @@ export default class Map {
     this.activities = activitiesToAdd
     this.layer.addData(activitiesToAdd.map((activity) => { return activity.summaryGeoJSON() }))
 
+    const markerCluserGroup = L.markerClusterGroup({
+      zoomToBoundsOnClick: false,
+      iconCreateFunction: function(cluster) {
+        console.log(cluster.getAllChildMarkers())
+        const firstMarker = cluster.getAllChildMarkers()[0]
+        const markerCount = cluster.getChildCount()
+        const markerCountForDisplay = markerCount > 99 ? 99 : markerCount 
+
+        const clusterHtml = `
+        <div class="relative">
+          <div class="bg-white absolute -top-1 -right-1 rounded-full w-4 h-4">
+            <div class="flex items-center justify-center w-full h-full">
+              <span class="text-xs">${markerCountForDisplay}</span>
+            </div>
+          </div>
+          <img src="${firstMarker.options.icon.options.iconUrl}" style="width: 40px; height: 40px; border-radius: 5px; border: 2px solid white; box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);" class="object-cover"/>
+        </div>
+        `
+        return L.divIcon({ html: clusterHtml, iconSize: [40, 40] });
+      }
+    });
+
     this.activities.forEach(activity => {
       activity.photos.forEach(photo => {
         if (photo.latlng) {
-          const icon = L.icon({
+          // console.log('url', photo.thumbnail_url)
+          const markerHtml = `<img src="${photo.thumbnail_url}" style="width: 40px; height: 40px; border-radius: 5px; border: 2px solid white; box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);" class="object-cover"/>`
+          const icon = L.divIcon({
+            html: markerHtml,
             iconUrl: photo.thumbnail_url,
-        
             iconSize:     [40, 40], // size of the icon
-            iconAnchor:   [20, 40], // point of the icon which will correspond to marker's location
           });
   
-          const marker = L.marker(photo.latlng, {icon: icon});
-          marker.addTo(this.markerLayer)
+          const marker = L.marker(photo.latlng, { icon });
+
+          markerCluserGroup.addLayer(marker)
         }
       })
     })
+
+    this.markerLayer = markerCluserGroup
+    this.map.addLayer(markerCluserGroup)
 
     this.layer.setStyle({
       weight: 3,
@@ -97,13 +126,14 @@ export default class Map {
     this.activities = []
     this.layer.remove()
     this.layer = L.geoJSON().addTo(this.map)
-    this.resetMarkerLayer()
+    this.removeMarkerLayer()
   }
   
-  resetMarkerLayer() {
-    this.markerLayer.clearLayers()
-    this.markerLayer.remove()
-    this.markerLayer = new L.LayerGroup().addTo(this.map)
+  removeMarkerLayer() {
+    if (this.markerLayer) {
+      this.markerLayer.clearLayers()
+      this.markerLayer.remove()
+    }
   }
 
   highlightActivity(activityId) {
