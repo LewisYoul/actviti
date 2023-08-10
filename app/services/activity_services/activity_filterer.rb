@@ -31,7 +31,7 @@ module ActivityServices
         )
       end
 
-      Result.new(@activities.offset(offset).limit(per_page), @activities.count, page, per_page)
+      Result.new(@activities.offset(offset).limit(per_page).includes(:photos), @activities.count, page, per_page)
     end
 
     private
