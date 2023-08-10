@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   resources :account, only: :index
   resources :map, only: :index
   resources :oauth, only: :index
-  resources :session, only: :new
   resources :activities, only: %i[index show] do
     get :refresh, on: :collection
     get :import, on: :collection
