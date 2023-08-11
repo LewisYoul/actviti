@@ -15,7 +15,7 @@
 # gem "pg"
 #
 default: &default
-  adapter: postgresql
+  adapter: postgis
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
@@ -84,3 +84,4 @@ production:
   database: actviti_production
   username: actviti
   password: <%= ENV["ACTVITI_DATABASE_PASSWORD"] %>
+  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres/, "postgis") %>

@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_29_092351) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_11_073102) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "activities", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -61,6 +62,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_29_092351) do
     t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_activity_groups_on_activity_id"
     t.index ["group_id"], name: "index_activity_groups_on_group_id"
+  end
+
+  create_table "geometries", force: :cascade do |t|
+    t.bigint "activity_id", null: false
+    t.geometry "geometry", limit: {:srid=>4326, :type=>"geometry"}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_geometries_on_activity_id"
+    t.index ["geometry"], name: "index_geometries_on_geometry", using: :gist
   end
 
   create_table "groups", force: :cascade do |t|
@@ -127,6 +137,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_29_092351) do
   add_foreign_key "activities", "users"
   add_foreign_key "activity_groups", "activities"
   add_foreign_key "activity_groups", "groups"
+  add_foreign_key "geometries", "activities"
   add_foreign_key "groups", "users"
   add_foreign_key "photos", "activities"
   add_foreign_key "subscriptions", "plans"

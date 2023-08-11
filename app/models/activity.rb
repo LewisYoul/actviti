@@ -3,7 +3,8 @@ class Activity < ApplicationRecord
   has_many :photos
   has_many :activity_groups
   has_many :groups, through: :activity_groups
+  has_one :geometry, dependent: :destroy
 
-  scope :with_geometry, -> { where.not(summary_polyline: nil) }
+  scope :with_geometry, -> { where.not(summary_polyline: nil).where.not(summary_polyline: '') }
   scope :chronological, -> { order(start_date: :desc) }
 end

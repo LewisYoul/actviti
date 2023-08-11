@@ -53,6 +53,9 @@ gem 'strava-ruby-client', git: 'https://github.com/LewisYoul/strava-ruby-client.
 # serialization
 gem 'active_model_serializers', '~> 0.10.0'
 
+gem 'activerecord-postgis-adapter'
+gem 'polylines'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
