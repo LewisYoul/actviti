@@ -22,11 +22,11 @@ services:
         value: enabled
       - key: RAILS_SERVE_STATIC_FILES # Imported from Heroku app
         value: enabled
-      # - key: DATABASE_URL # Render PostgreSQL database
-      #   fromDatabase:
-      #     name: postgresql-cubic-32965
-      #     property: connectionString
+      - key: DATABASE_URL # Render PostgreSQL database
+        fromDatabase:
+          name: postgresql-cubic-32965
+          property: connectionString
 
 databases: # Render PostgreSQL database
-  # - name: postgresql-cubic-32965
-  #   ipAllowList: [] # only allow internal connections
+  - name: postgresql-cubic-32965
+    ipAllowList: [] # only allow internal connections
