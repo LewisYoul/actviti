@@ -8,9 +8,6 @@ services:
     dockerfilePath: Dockerfile.render
     plan: starter # optional; defaults to starter
     numInstances: 1
-    domains: # custom domains
-      - 'maptiviti.com'
-      - 'www.maptiviti.com'
     envVars:
       - key: LANG # Imported from Heroku app
         value: en_US.UTF-8
