@@ -88,10 +88,10 @@ class ActivitiesController < ApplicationController
 
           Activity.transaction do
             activities.each do |activity|
-              Activity.create!(
+              activity = Activity.create!(
                 user: current_user,
                 name: activity.name,
-                activity_type: activity.type,
+                activity_type: activity.sport_type,
                 distance: activity.distance,
                 moving_time: activity.moving_time,
                 elapsed_time: activity.elapsed_time,
@@ -122,6 +122,10 @@ class ActivitiesController < ApplicationController
                 external_id: activity.external_id,
                 total_photo_count: activity.total_photo_count
               )
+
+              next if !activity.summary_polyline || activity.summary_polyline == ''
+
+              Geometry.create!(activity: activity,  geometry: "LINESTRING(#{Polylines::Decoder.decode_polyline(activity.summary_polyline).map { |lat, long| "#{lat} #{long}" }.join(', ')})")
             end
           end
         end
@@ -139,38 +143,44 @@ class ActivitiesController < ApplicationController
     new_activities = strava_client.athlete_activities(after: last_activity.start_date, per_page: 100)
     
     new_activities.each do |strava_activity|
-      current_user.activities.find_or_create_by!(strava_id: strava_activity.id) do |activity|
-        activity.name = strava_activity.name
-        activity.activity_type = strava_activity.type
-        activity.distance = strava_activity.distance
-        activity.moving_time = strava_activity.moving_time
-        activity.elapsed_time = strava_activity.elapsed_time
-        activity.total_elevation_gain = strava_activity.total_elevation_gain
-        activity.strava_id = strava_activity.id
-        activity.start_date = strava_activity.start_date
-        activity.start_date_local = strava_activity.start_date_local
-        activity.timezone = strava_activity.timezone
-        activity.utc_offset = strava_activity.utc_offset
-        activity.location_country = strava_activity.location_country
-        activity.achievement_count = strava_activity.achievement_count
-        activity.kudos_count = strava_activity.kudos_count
-        activity.comment_count = strava_activity.comment_count
-        activity.athlete_count = strava_activity.athlete_count
-        activity.photo_count = strava_activity.photo_count
-        activity.summary_polyline = strava_activity.map.summary_polyline
-        activity.visibility = strava_activity.visibility
-        activity.start_latlng = strava_activity.start_latlng
-        activity.end_latlng = strava_activity.end_latlng
-        activity.average_speed = strava_activity.average_speed
-        activity.max_speed = strava_activity.max_speed
-        activity.average_cadence = strava_activity.average_cadence
-        activity.has_heartrate = strava_activity.has_heartrate
-        activity.average_heartrate = strava_activity.average_heartrate
-        activity.max_heartrate = strava_activity.max_heartrate
-        activity.elev_high = strava_activity.elev_high
-        activity.elev_low = strava_activity.elev_low
-        activity.external_id = strava_activity.external_id
-        activity.total_photo_count = strava_activity.total_photo_count
+      Activity.transaction do
+        current_user.activities.find_or_create_by!(strava_id: strava_activity.id) do |activity|
+          activity.name = strava_activity.name
+          activity.activity_type = strava_activity.sport_type
+          activity.distance = strava_activity.distance
+          activity.moving_time = strava_activity.moving_time
+          activity.elapsed_time = strava_activity.elapsed_time
+          activity.total_elevation_gain = strava_activity.total_elevation_gain
+          activity.strava_id = strava_activity.id
+          activity.start_date = strava_activity.start_date
+          activity.start_date_local = strava_activity.start_date_local
+          activity.timezone = strava_activity.timezone
+          activity.utc_offset = strava_activity.utc_offset
+          activity.location_country = strava_activity.location_country
+          activity.achievement_count = strava_activity.achievement_count
+          activity.kudos_count = strava_activity.kudos_count
+          activity.comment_count = strava_activity.comment_count
+          activity.athlete_count = strava_activity.athlete_count
+          activity.photo_count = strava_activity.photo_count
+          activity.summary_polyline = strava_activity.map.summary_polyline
+          activity.visibility = strava_activity.visibility
+          activity.start_latlng = strava_activity.start_latlng
+          activity.end_latlng = strava_activity.end_latlng
+          activity.average_speed = strava_activity.average_speed
+          activity.max_speed = strava_activity.max_speed
+          activity.average_cadence = strava_activity.average_cadence
+          activity.has_heartrate = strava_activity.has_heartrate
+          activity.average_heartrate = strava_activity.average_heartrate
+          activity.max_heartrate = strava_activity.max_heartrate
+          activity.elev_high = strava_activity.elev_high
+          activity.elev_low = strava_activity.elev_low
+          activity.external_id = strava_activity.external_id
+          activity.total_photo_count = strava_activity.total_photo_count
+        end
+
+        next if !activity.summary_polyline || activity.summary_polyline == ''
+
+        Geometry.create!(activity: activity,  geometry: "LINESTRING(#{Polylines::Decoder.decode_polyline(activity.summary_polyline).map { |lat, long| "#{lat} #{long}" }.join(', ')})")
       end
     end
 
