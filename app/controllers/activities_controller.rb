@@ -144,7 +144,7 @@ class ActivitiesController < ApplicationController
     
     new_activities.each do |strava_activity|
       Activity.transaction do
-        current_user.activities.find_or_create_by!(strava_id: strava_activity.id) do |activity|
+        new_activity = current_user.activities.find_or_create_by!(strava_id: strava_activity.id) do |activity|
           activity.name = strava_activity.name
           activity.activity_type = strava_activity.sport_type
           activity.distance = strava_activity.distance
@@ -178,9 +178,9 @@ class ActivitiesController < ApplicationController
           activity.total_photo_count = strava_activity.total_photo_count
         end
 
-        next if !activity.summary_polyline || activity.summary_polyline == ''
+        next if !new_activity.summary_polyline || new_activity.summary_polyline == ''
 
-        Geometry.create!(activity: activity,  geometry: "LINESTRING(#{Polylines::Decoder.decode_polyline(activity.summary_polyline).map { |lat, long| "#{lat} #{long}" }.join(', ')})")
+        Geometry.create!(activity: new_activity,  geometry: "LINESTRING(#{Polylines::Decoder.decode_polyline(new_activity.summary_polyline).map { |lat, long| "#{lat} #{long}" }.join(', ')})")
       end
     end
 
