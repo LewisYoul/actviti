@@ -11,7 +11,8 @@ export default class extends Controller {
     'pagination',
     'nextPageButton',
     'previousPageButton',
-    'filter'
+    'filter',
+    'spinner'
   ]
 
   static values = {
@@ -99,6 +100,8 @@ export default class extends Controller {
   applyFilters() {
     const params = this.buildParams(this.filters)
     this.searchButtonTarget.href = `/activities?${params}`
+
+    this.spinnerTarget.classList.remove('hidden')
     this.searchButtonTarget.click()
   }
 
