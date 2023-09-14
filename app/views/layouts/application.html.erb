@@ -91,7 +91,6 @@
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                   <%= navbar_link_to('Activities', authenticated_root_path) %>
-                  <%= navbar_link_to('Account', account_index_path) %>
                   <%= navbar_link_to('Groups', groups_path) %>
                 </div>
               </div>
@@ -102,7 +101,31 @@
                   <%= link_to 'Upgrade to Pro', upgrade_plan_path(Plan.find_by(level: 'pro')), data: { turbo: false }, class: "mr-2 inline-flex items-center px-2 py-1 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" %>
                 <% end %>
 
-                <%= link_to 'Log Out', session_destroy_path %>
+                <div data-controller="popover" class="relative">
+                  <div data-action="click->popover#toggle" data-popover-target="trigger" class="cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                    </svg>
+                  </div>
+                  <div data-popover-target="popover" data-action="click@window->popover#close" class="hidden w-36 shadow-md rounded-md bg-white absolute z-1100 right-0 top-7">
+                    <%= link_to account_index_path, class: "mb-1" do %>
+                      <div class="flex items-center hover:bg-gray-100 px-3 py-1 rounded-t-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        <span class="ml-1 text-sm">Account</span>
+                      </div>
+                    <% end %>
+                    <%= link_to session_destroy_path, class: "mb-1" do %>
+                      <div class="flex items-center hover:bg-gray-100 px-3 py-1 rounded-b-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                        </svg>
+                        <span class="ml-1 text-sm">Log Out</span>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
