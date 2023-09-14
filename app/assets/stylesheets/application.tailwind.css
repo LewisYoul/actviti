@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.turbo-progress-bar {
+  visibility: hidden;
+}
+
 html,
 body {
   height: 100%;
