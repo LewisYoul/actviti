@@ -1,6 +1,25 @@
 class WebhooksController < ApplicationController
   protect_from_forgery with: :null_session
 
+  def strava
+    debugger
+    # l0-k3pw6XAtCcEXiyFqwiA
+    if request.method == "GET"
+      # TODO: use verify token
+      render json: { 'hub.challenge': params['hub.challenge'] }
+    else
+      if params[:object_type] == 'activity'
+        if params[:aspect_type] == 'create'
+          ActivityServices::ActivityCreator.call(params[:owner_id], params[:object_id])
+        elsif params[:aspect_type] == 'update'
+
+        elsif params[:aspect_type] == 'delete'
+          # mark the record as deleted so the user can choose to delete it
+        end
+      end
+    end
+  end
+
   def stripe
     # TODO: authorize
     event = Stripe::Event.construct_from(params.permit!.to_h)

@@ -30,6 +30,10 @@ Rails.application.routes.draw do
 
   resources :subscriptions, only: :update
   resources :webhooks do
+    # Strava makes a GET to /webhooks/strava to initially enable the subscription
+    # Then webhooks are POSTed to /webhooks/strava subsequently
+    get :strava, on: :collection
+    post :strava, on: :collection
     post :stripe, on: :collection
   end
 end
