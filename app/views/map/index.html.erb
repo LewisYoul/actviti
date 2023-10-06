@@ -39,9 +39,11 @@
         </div>
       </div>
 
-      <div class="absolute z-500 bottom-11 left-0 bg-white rounded-md mb-2 ml-2 p-2 w-[420px] text-sm">
-        <span>Thank you for using Maptiviti 🎉. You are currently on the free plan which only allows you to view the 30 activities from when you signed up. Upgrade to pro to be able to view all of your activities!</span>
-      </div>
+      <% if current_user.plan.free? %>
+        <div class="absolute z-500 bottom-11 left-0 bg-white rounded-md mb-2 ml-2 p-2 w-[420px] text-sm">
+          <span>Thank you for using Maptiviti 🎉. You are currently on the free plan which only allows you to view the 30 activities from when you signed up. Upgrade to pro to be able to view all of your activities!</span>
+        </div>
+      <% end %>
 
       <div class="overflow-auto md:overflow-visible w-full absolute mb-1 px-1 md:ml-1 md:mb-2 z-500 bottom-0 left-0 flex" data-action="mapMoved@window->filters#mapMoved" id="filters">
         <input id="searchbar" data-filters-target="search" data-action="input->filters#search" class="shadow-md whitespace-nowrap inline-flex items-center rounded-md justify-center px-2 py-1 border border-transparent shadow-sm bg-white hover:bg-gray-100 focus:outline-none"></input>
