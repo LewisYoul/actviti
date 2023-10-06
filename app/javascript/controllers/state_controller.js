@@ -11,6 +11,7 @@ export default class extends Controller {
 
   connect() {
     console.log('state')
+    console.log(this.showMapPhotosValue)
   }
 
   setSelectedActivityId(activityId) {

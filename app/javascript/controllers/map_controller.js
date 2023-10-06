@@ -4,9 +4,10 @@ import Activity from "../models/activity"
 
 export default class extends Controller {
   static outlets = ['state']
-  static targets = ['table', 'selected', 'tableRow', 'panel']
+  static targets = ['table', 'selected', 'tableRow', 'panel', 'checkIcon', 'crossIcon']
 
   static values = {
+    showMapPhotos: Boolean,
     activities: { type: Array, default: [] }
   }
 
@@ -20,7 +21,6 @@ export default class extends Controller {
 
     this.stateController.on('activitySelected', (id) => { this.map.highlightActivity(id) })
     this.stateController.on('activityDeselected', () => {
-      console.log('undo')
       this.map.blurActivities();
 
       this.tableRowTargets.forEach((row) => {
@@ -28,6 +28,15 @@ export default class extends Controller {
         row.classList.remove("bg-purple-200")
       })
     })
+  }
+
+  toggleMapPhotos() {
+    this.showMapPhotosValue = !this.showMapPhotosValue
+
+    this.checkIconTarget.classList.toggle('hidden')
+    this.crossIconTarget.classList.toggle('hidden')
+
+    this.map.togglePhotos()
   }
 
   onMapMove(bbox, self) {

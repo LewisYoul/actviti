@@ -2,18 +2,47 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="flex flex-col flex-1" id="filters" data-controller="map filters" data-map-state-outlet=".stateController">
+<div class="flex flex-col flex-1" id="filters" data-controller="map filters" data-map-show-map-photos-value="true" data-map-state-outlet=".stateController">
   <%= turbo_frame_tag "selected_activity" %>
 
   <div class="flex h-[calc(((100vh-48px)/3)*2)] z-40 overflow-auto">
     <div class="h-full flex-1 relative">
-      <button data-action="click->filters#refreshActivities" class="shadow-md absolute mt-4 mr-4 z-500 top-0 right-0 whitespace-nowrap inline-flex items-center justify-center px-2 py-1 border border-transparent rounded-md shadow-sm text-base font-medium bg-white hover:bg-gray-100 text-purple-600 font-sans">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-        <span class="ml-1">Refresh Activities</span>
-      </button>
-      
+      <div data-controller="popover" class="shadow-md absolute z-500 top-4 right-4 rounded-md bg-white text-purple-600 cursor-pointer">
+        <button data-action="click->popover#toggle" class="block p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+
+        <div data-popover-target="popover" data-action="click@window->popover#close" class="hidden w-36 shadow-md rounded-md bg-white absolute z-1100 right-0 top-7">
+          <div class="flex items-center hover:bg-gray-100 px-3 py-1 rounded-t-md">
+            <button data-action="click->filters#refreshActivities" class="block text-purple-600 font-sans flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              <span class="ml-1 text-sm">Refresh</span>
+            </button>
+          </div>
+
+          <div class="flex items-center hover:bg-gray-100 px-3 py-1 rounded-t-md">
+            <button data-action="click->map#toggleMapPhotos" class="block text-purple-600 font-sans flex items-center">
+              <svg data-map-target="checkIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+              <svg data-map-target="crossIcon" class="w-4 h-4 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span class="ml-1 text-sm">Map photos</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute z-500 bottom-11 left-0 bg-white rounded-md mb-2 ml-2 p-2 w-[420px] text-sm">
+        <span>Thank you for using Maptiviti 🎉. You are currently on the free plan which only allows you to view the 30 activities from when you signed up. Upgrade to pro to be able to view all of your activities!</span>
+      </div>
+
       <div class="overflow-auto md:overflow-visible w-full absolute mb-1 px-1 md:ml-1 md:mb-2 z-500 bottom-0 left-0 flex" data-action="mapMoved@window->filters#mapMoved" id="filters">
         <input id="searchbar" data-filters-target="search" data-action="input->filters#search" class="shadow-md whitespace-nowrap inline-flex items-center rounded-md justify-center px-2 py-1 border border-transparent shadow-sm bg-white hover:bg-gray-100 focus:outline-none"></input>
 

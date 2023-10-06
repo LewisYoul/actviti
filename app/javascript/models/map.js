@@ -5,6 +5,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 
 export default class Map {
   constructor(id, options) {
+    this.showMapPhotos = true
     this.options = options
     this.map = L.map(id, { attributionControl: false, zoomSnap: 0, wheelPxPerZoomLevel: 2 }).setView([51.505, -0.09], 13)
     console.log('bbox', this.map.getBounds().toBBoxString())
@@ -44,6 +45,16 @@ export default class Map {
 
   disableFlyingToActivities() {
     this.shouldFlytoActivities = false
+  }
+
+  togglePhotos() {
+    if (this.showMapPhotos) {
+      this.map.removeLayer(this.markerLayer)
+    } else {
+      this.map.addLayer(this.markerLayer)
+    }
+
+    this.showMapPhotos = !this.showMapPhotos
   }
 
   addActivities(activities) {
@@ -95,7 +106,10 @@ export default class Map {
     })
 
     this.markerLayer = markerCluserGroup
-    this.map.addLayer(markerCluserGroup)
+
+    if (this.showMapPhotos) {
+      this.map.addLayer(markerCluserGroup)
+    }
 
     this.layer.setStyle({
       weight: 3,
