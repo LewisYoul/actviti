@@ -62,6 +62,6 @@ class StravaClient
 
   # Don't memoize & reload user token to ensure access_token is always up to date
   def client
-    Strava::Api::Client.new(access_token: @user.token.reload.access_token)
+    Strava::Api::Client.new(access_token: @user.reload.token.access_token)
   end
 end
