@@ -51,11 +51,11 @@ module ActivityServices
           external_id: strava_activity.external_id,
           total_photo_count: strava_activity.total_photo_count,
         )
+
+        return if !activity.summary_polyline || activity.summary_polyline == ''
+  
+        Geometry.create!(activity: activity,  geometry: "LINESTRING(#{Polylines::Decoder.decode_polyline(activity.summary_polyline).map { |lat, long| "#{lat} #{long}" }.join(', ')})")
       end
-
-      return if !strava_activity.summary_polyline || strava_activity.summary_polyline == ''
-
-      Geometry.create!(activity: strava_activity,  geometry: "LINESTRING(#{Polylines::Decoder.decode_polyline(strava_activity.summary_polyline).map { |lat, long| "#{lat} #{long}" }.join(', ')})")
     end
   end
 end

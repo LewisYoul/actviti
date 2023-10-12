@@ -2,7 +2,6 @@ class WebhooksController < ApplicationController
   protect_from_forgery with: :null_session
 
   def strava
-    debugger
     # l0-k3pw6XAtCcEXiyFqwiA
     if request.method == "GET"
       # TODO: use verify token
