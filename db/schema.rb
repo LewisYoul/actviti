@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_12_073324) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_12_075513) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_12_073324) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "polyline"
+    t.boolean "deleted_in_strava", default: false, null: false
     t.index ["strava_id"], name: "index_activities_on_strava_id", unique: true
     t.index ["user_id"], name: "index_activities_on_user_id"
   end

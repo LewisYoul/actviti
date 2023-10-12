@@ -13,9 +13,15 @@ class WebhooksController < ApplicationController
         elsif params[:aspect_type] == 'update'
 
         elsif params[:aspect_type] == 'delete'
-          # mark the record as deleted so the user can choose to delete it
+          activity = Activity.find_by(strava_id: params[:object_id])
+          
+          if activity
+            activity.update!(deleted_in_strava: true)
+          end
         end
       end
+
+      head :ok
     end
   end
 
