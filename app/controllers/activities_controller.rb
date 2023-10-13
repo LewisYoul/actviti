@@ -54,7 +54,7 @@ class ActivitiesController < ApplicationController
       format.html do
         @activity = current_user.plan_limited_activities.find_by(id: params[:id])
 
-        if !@activity.polyline
+        if !@activity.deleted_in_strava && !@activity.polyline
           strava_activity = strava_client.activity(@activity.strava_id)
           photos = strava_client.activity_photos(@activity.strava_id)
 
