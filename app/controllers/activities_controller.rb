@@ -46,6 +46,9 @@ class ActivitiesController < ApplicationController
 
       format.turbo_stream
       format.html
+      format.json do
+        render json: @activities, each_serializer: ActivitySerializer
+      end
     end
   end
 

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'map', to: "map#index", as: :authenticated_root
   root to: "home#index", as: :unauthenticated_root
 
+  resources :new_map, only: :index
   resources :home, only: :index
   resources :account, only: :index
   resources :map, only: :index
