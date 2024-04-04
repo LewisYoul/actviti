@@ -2,9 +2,11 @@ import React from "react";
 import { default as MapModel } from "../../../models/map";
 import Activity from "../../../models/activity";
 import ActivitiesTable from "./ActivitiesTable"
+import ActivityPanel from "./ActivityPanel"
 
 const Map = () => {
   const [activities, setActivities] = React.useState([])
+  const [selectedActivityId, setSelectedActivityId] = React.useState(null)
   const [map, setMap] = React.useState()
   const [filters, setFilters] = React.useState({
     bbox: "-0.20547866821289065,51.468766318140894,0.0254058837890625,51.54121061341155"
@@ -21,6 +23,11 @@ const Map = () => {
         }
       })
     )
+
+    window.addEventListener('activitySelected', (event) => {
+      console.log('activitySelected', event)
+      setSelectedActivityId(event.detail.activityId)
+    })
   }, [])
 
   React.useEffect(() => {
@@ -28,6 +35,22 @@ const Map = () => {
 
     fetchActivities()
   }, [map, filters])
+
+  React.useEffect(() => {
+    if (!map) { return }
+
+    map.highlightActivity(selectedActivityId)
+  }, [map, selectedActivityId])
+
+
+  React.useEffect(() => {
+    if (!map) { return }
+
+    if (selectedActivityId) {
+      map.highlightActivity(selectedActivityId)
+    }
+  }, [activities, selectedActivityId])
+
 
   const fetchActivities = () => {
     fetch(`activities.json?${buildParams()}`)
@@ -59,9 +82,14 @@ const Map = () => {
 
   return(
     <div className="flex flex-col flex-1">
-      <div id="map" className="h-full w-full flex-1"></div>
+      <div className="h-full w-full flex">
+        <div id="map" className="h-full w-full flex-1">
 
-      <ActivitiesTable activities={activities} />
+        </div>
+        {selectedActivityId && <ActivityPanel activityId={selectedActivityId} />}
+      </div>
+
+      <ActivitiesTable activities={activities} selectedActivityId={selectedActivityId}/>
     </div>
   )
 }
