@@ -31,10 +31,10 @@ const ActivityPanel = ({ activity }) => {
               <span className="ml-2 text-sm text-gray-700">{activity.startDateShort()}</span>
             </div>
           </div>
-          <div className="group flex items-center cursor-pointer" data-action="click->map#focusActivity">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          <div className="group flex items-center cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
             </svg>
             <h2 className="group-hover:underline ml-1 text-lg font-medium text-gray-900" id="slide-over-title">
               {activity.name()}
@@ -51,16 +51,22 @@ const ActivityPanel = ({ activity }) => {
             </div>
           <% end %> */}
       
-          {/* <% if @activity.photos.any? %>
+          {activity.photos.length > 0 && (
             <div className="mt-3">
               <div className="w-full flex h-40 overflow-x-auto">
-                <% @activity.photos.each do |photo| %>
-                  <% next unless photo.url %>
+                {activity.photos.map(photo => {
+                  if (!photo.url) { return }
+
+                  return (
+                    <img key={`photo-${photo.id}`} src={photo.url} className="cursor-pointer flex-none object-cover w-40 h-40 hover:opacity-90 inline" />
+                  )
+                })}
+                  {/* <% next unless photo.url %>
                   <%= image_tag(photo.url, { class: "cursor-pointer flex-none object-cover w-40 h-40 hover:opacity-90 inline", data: { carousel_target: 'image', action: 'click->carousel#open' } }) %>
-                <% end %>
+                <% end %> */}
               </div>
             </div>
-          <% end %> */}
+          )}
       
           <div className="flex justify-between mt-3">
             <div>
@@ -128,8 +134,8 @@ const ActivityPanel = ({ activity }) => {
             <div data-lazyModal-target="lazyModal" className="hidden fixed w-screen h-screen bg-gray-800 bg-opacity-75 top-0 left-0 z-1100">
               <div className="flex justify-center w-full h-full">
                 <div className="relative bg-white rounded-md bg-opacity-100 w-[720px] h-[525px] mt-6">
-                  <svg data-action="click->lazyModal#close" className="text-gray-600 hover:text-gray-400 absolute top-0 right-0 cursor-pointer w-12 h-12 pr-4 pt-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  <svg data-action="click->lazyModal#close" className="text-gray-600 hover:text-gray-400 absolute top-0 right-0 cursor-pointer w-12 h-12 pr-4 pt-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
       
                   <div data-lazyModal-target="wrapper" className="h-full">
