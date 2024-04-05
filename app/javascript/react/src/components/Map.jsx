@@ -6,7 +6,7 @@ import ActivityPanel from "./ActivityPanel"
 
 const Map = () => {
   const [activities, setActivities] = React.useState([])
-  const [selectedActivityId, setSelectedActivityId] = React.useState(null)
+  const [selectedActivity, setSelectedActivity] = React.useState(null)
   const [map, setMap] = React.useState()
   const [filters, setFilters] = React.useState({
     bbox: "-0.20547866821289065,51.468766318140894,0.0254058837890625,51.54121061341155"
@@ -25,8 +25,7 @@ const Map = () => {
     )
 
     window.addEventListener('activitySelected', (event) => {
-      console.log('activitySelected', event)
-      setSelectedActivityId(event.detail.activityId)
+      setSelectedActivity(event.detail.activity)
     })
   }, [])
 
@@ -39,17 +38,17 @@ const Map = () => {
   React.useEffect(() => {
     if (!map) { return }
 
-    map.highlightActivity(selectedActivityId)
-  }, [map, selectedActivityId])
+    map.highlightActivity(selectedActivity?.id)
+  }, [map, selectedActivity])
 
 
   React.useEffect(() => {
     if (!map) { return }
 
-    if (selectedActivityId) {
-      map.highlightActivity(selectedActivityId)
+    if (selectedActivity) {
+      map.highlightActivity(selectedActivity.id)
     }
-  }, [activities, selectedActivityId])
+  }, [map, activities, selectedActivity])
 
 
   const fetchActivities = () => {
@@ -86,10 +85,10 @@ const Map = () => {
         <div id="map" className="h-full w-full flex-1">
 
         </div>
-        {selectedActivityId && <ActivityPanel activityId={selectedActivityId} />}
+        {selectedActivity && <ActivityPanel activity={selectedActivity} />}
       </div>
 
-      <ActivitiesTable activities={activities} selectedActivityId={selectedActivityId}/>
+      <ActivitiesTable activities={activities} selectedActivity={selectedActivity}/>
     </div>
   )
 }

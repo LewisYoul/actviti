@@ -53,10 +53,13 @@ class ActivitiesController < ApplicationController
   end
 
   def show
-    respond_to do |format|
-      format.html do
-        @activity = current_user.plan_limited_activities.find_by(id: params[:id])
+    @activity = current_user.plan_limited_activities.find_by(id: params[:id])
 
+    respond_to do |format|
+      format.json do
+        render json: @activity, serializer: ActivitySerializer
+      end
+      format.html do
         if !@activity.deleted_in_strava && !@activity.polyline
           strava_activity = strava_client.activity(@activity.strava_id)
           photos = strava_client.activity_photos(@activity.strava_id)

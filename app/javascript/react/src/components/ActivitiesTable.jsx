@@ -1,8 +1,14 @@
 import React from 'react'
 
-const ActivitiesTable = ({ activities, selectedActivityId }) => {
-  const selectActivity = (id) => {
-    const event = new CustomEvent('activitySelected', { detail: { activityId: id } })
+const ActivitiesTable = ({ activities, selectedActivity }) => {
+  const toggleActivity = (activity) => {
+    let event;
+    
+    if (activity.id === selectedActivity?.id) {
+      event = new CustomEvent('activitySelected', { detail: { activity: null } })
+    } else {
+      event = new CustomEvent('activitySelected', { detail: { activity } })
+    }
 
     window.dispatchEvent(event)
   }
@@ -22,7 +28,7 @@ const ActivitiesTable = ({ activities, selectedActivityId }) => {
           {
             activities.map(activity => {
               return (
-                <div key={activity.id} onClick={() => { selectActivity(activity.id) }} className={`flex cursor-pointer ${activity.id === selectedActivityId ? 'bg-purple-200' : 'odd:bg-gray-50 hover:bg-purple-100'}`}>
+                <div key={activity.id} onClick={() => { toggleActivity(activity) }} className={`flex cursor-pointer ${activity.id === selectedActivity?.id ? 'bg-purple-200' : 'odd:bg-gray-50 hover:bg-purple-100'}`}>
                   <div className="whitespace-nowrap overflow-hidden py-1.5 pl-4 pr-3 text-xs md:text-sm text-gray-900 sm:pl-6 w-4/12">{ activity.name() }</div>
                   <div className="whitespace-nowrap overflow-hidden px-2 py-1.5 text-xs md:text-sm text-gray-900 w-2/12">{ activity.startDateShort() }</div>
                   <div className="whitespace-nowrap overflow-hidden px-2 py-1.5 text-xs md:text-sm text-gray-900 text-left w-2/12">{ activity.type() }</div>
