@@ -11,11 +11,14 @@ const Map = () => {
   const [filters, setFilters] = React.useState({
     bbox: "-0.20547866821289065,51.468766318140894,0.0254058837890625,51.54121061341155"
   })
+  const prevSelectedActivityRef = React.useRef(null)
 
   React.useEffect(() => {
     setMap(
       new MapModel('map', {
-        onActivityClick: () => {},
+        onActivityClick: (activity) => {
+          activity.id === prevSelectedActivityRef.current?.id ? setSelectedActivity(null) : setSelectedActivity(activity)
+        },
         onMove: (newBbox) => {
           console.log('bbox', newBbox)
 
@@ -37,6 +40,10 @@ const Map = () => {
 
   React.useEffect(() => {
     if (!map) { return }
+
+    // This is required so that onActivityClick knows what the previous selectedActivity was
+    // For reasons I don't understand the selectedActivity is never updated in that function
+    prevSelectedActivityRef.current = selectedActivity
 
     map.highlightActivity(selectedActivity?.id)
   }, [map, selectedActivity])

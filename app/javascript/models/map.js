@@ -119,8 +119,9 @@ export default class Map {
 
     this.layer.on('click', (e) => {
       const activityId = e.layer.feature.geometry.properties.id
-      console.log('actid', activityId)
-      this.options.onActivityClick(activityId)
+      const clickedActivity = this.activities.find(activity => activity.id === activityId)
+
+      this.options.onActivityClick(clickedActivity)
     })
 
     if (this.shouldFlytoActivities) {
