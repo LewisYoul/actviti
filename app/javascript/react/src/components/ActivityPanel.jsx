@@ -22,8 +22,20 @@ const ActivityPanel = ({ activity }) => {
     console.log('activity', activity)
   }, [activity])
 
+  const deselectActivity = () => {
+    const event = new CustomEvent('activitySelected', { detail: { activity: null } })
+
+    window.dispatchEvent(event)
+  }
+
   return (
     <div className="h-full overflow-auto px-6 py-6 bg-white z-500 w-[400px] max-w-[400px]">
+      <button onClick={deselectActivity} className="absolute right-6 text-gray-400 hover:text-gray-500">
+        <span className="sr-only">Close panel</span>
+        <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" ariaHidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        </button>
       {activity && (
         <div>
           <div className="flex items-start justify-between">
