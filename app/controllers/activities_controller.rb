@@ -83,7 +83,7 @@ class ActivitiesController < ApplicationController
 
   def import
     respond_to do |format|
-      format.html do
+      format.json do
         if !current_user.activities.exists?
           activities = []
 
@@ -136,7 +136,7 @@ class ActivitiesController < ApplicationController
           end
         end
 
-        redirect_to activities_path(format: :html)
+        render json: { message: 'Activities imported' }
       end
     end
   end

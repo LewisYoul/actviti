@@ -1,5 +1,5 @@
 class NewMapController < ApplicationController
-  def index
-    
-  end
+  before_action :authenticate_user
+
+  def index; end
 end

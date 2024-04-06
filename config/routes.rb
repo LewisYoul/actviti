@@ -4,9 +4,10 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path 
-  get 'map', to: "map#index", as: :authenticated_root
+  get 'map', to: "new_map#index", as: :authenticated_root
   root to: "home#index", as: :unauthenticated_root
 
+  resources :welcome, only: :index
   resources :new_map, only: :index
   resources :home, only: :index
   resources :account, only: :index

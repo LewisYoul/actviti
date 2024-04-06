@@ -42,7 +42,7 @@ class OauthController < ApplicationController
         # first_login is used to determine whether we need to fetch
         # the user's activities from strava the first time they hit the
         # map page
-        redirect_to authenticated_root_path(first_login: true)
+        redirect_to welcome_index_path
       end
     else
       redirect_to unauthenticated_root_path
