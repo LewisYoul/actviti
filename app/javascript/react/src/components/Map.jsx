@@ -5,7 +5,7 @@ import ActivitiesTable from "./ActivitiesTable"
 import ActivityPanel from "./ActivityPanel"
 import debounce from 'debounce'
 
-const Map = () => {
+const Map = ({ currentUser }) => {
   const [activities, setActivities] = React.useState([])
   const [selectedActivity, setSelectedActivity] = React.useState(null)
   const [map, setMap] = React.useState()
@@ -100,11 +100,13 @@ const Map = () => {
     <div className="flex flex-col flex-1">
       <div className="h-full w-full flex">
         <div className="h-[calc(((100vh-48px)/3)*2)] w-full relative">
-          <div className="absolute z-500 flex justify-center w-full">
-            <div className="bg-white px-2 py-1 mt-4 text-sm rounded-md">
-              You're on the free plan which only allows you to view 30 activities from when you signed up. Upgrade to view all of your activities!
+          {currentUser.plan.level === "free" && (
+            <div className="absolute z-500 flex justify-center w-full">
+              <div className="bg-white px-2 py-1 mt-4 text-sm rounded-md">
+                You're on the free plan which only allows you to view 30 activities from when you signed up. Upgrade to view all of your activities!
+              </div>
             </div>
-          </div>
+          )}
           <div className="overflow-auto md:overflow-visible w-full absolute mb-1 px-1 md:ml-1 md:mb-2 z-500 bottom-0 left-0 flex" id="filters">
             <input onChange={updateNameFilter} className="shadow-md whitespace-nowrap inline-flex items-center rounded-md justify-center px-2 py-1 border border-transparent shadow-sm bg-white hover:bg-gray-100 focus:outline-none"></input>
 

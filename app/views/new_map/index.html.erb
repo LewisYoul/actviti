@@ -2,4 +2,4 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<map-component class="flex flex-grow h-full" />
+<map-component props-json="<%= { currentUser: current_user.attributes.merge(plan: current_user.plan) }.to_json %>" class="flex flex-grow h-full" />
