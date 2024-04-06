@@ -11,7 +11,14 @@ class WebhooksController < ApplicationController
         if params[:aspect_type] == 'create'
           ActivityServices::ActivityCreator.call(params[:owner_id], params[:object_id])
         elsif params[:aspect_type] == 'update'
-
+          # "updates"=>{"title"=>"Bigbury and Burgh Island"}
+          
+          activity = Activity.find_by(strava_id: params[:object_id])
+          new_name = params.dig(:updates, :title)
+          
+          if new_name && activity
+            activity.update!(name: new_name)
+          end
         elsif params[:aspect_type] == 'delete'
           activity = Activity.find_by(strava_id: params[:object_id])
           
