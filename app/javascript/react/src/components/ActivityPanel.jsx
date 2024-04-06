@@ -1,25 +1,22 @@
 import React from 'react'
+import Activity from '../../../models/activity'
 
 const ActivityPanel = ({ activity }) => {
-  // const [activity, setActivity] = React.useState(null)
-
-  // React.useEffect(() => {
-  //   console.log('activityId', activityId)
-
-  //   if (!activityId) { return }
-
-  //   fetch(`activities/${activityId}.json`)
-  //   .then((res) => {
-  //     res.json().then(activity => {
-  //       console.log('activity', activity)
-
-  //       setActivity(activity)
-  //     })
-  //   })
-  // }, [activityId])
+  const [localActivity, setLocalActivity] = React.useState()
 
   React.useEffect(() => {
-    console.log('activity', activity)
+    // Clear the panel of previous activity if there is one
+    setLocalActivity(null)
+
+    if (!activity) { return }
+
+    fetch(`activities/${activity.id}.json`)
+    .then((res) => {
+      res.json().then(returnedActivity => {
+        setLocalActivity(new Activity(returnedActivity))
+      })
+      .catch(console.error)
+    })
   }, [activity])
 
   const deselectActivity = () => {
@@ -36,11 +33,12 @@ const ActivityPanel = ({ activity }) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
         </button>
-      {activity && (
+      {!localActivity && (<div>Loading...</div>)}
+      {localActivity && (
         <div>
           <div className="flex items-start justify-between">
             <div>
-              <span className="ml-2 text-sm text-gray-700">{activity.startDateShort()}</span>
+              <span className="ml-2 text-sm text-gray-700">{localActivity.startDateShort()}</span>
             </div>
           </div>
           <div className="group flex items-center cursor-pointer">
@@ -49,24 +47,24 @@ const ActivityPanel = ({ activity }) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
             </svg>
             <h2 className="group-hover:underline ml-1 text-lg font-medium text-gray-900" id="slide-over-title">
-              {activity.name()}
+              {localActivity.name()}
             </h2>
           </div>
       
-          {/* <% if @activity.deleted_in_strava? %>
+          {/* <% if @localActivity.deleted_in_strava? %>
             <div className="rounded-md bg-red-50 p-2 mt-2">
               <div className="flex">
                 <div className="ml-3">
-                  <p className="text-sm font-medium text-red-800">This activity has been deleted in Strava</p>
+                  <p className="text-sm font-medium text-red-800">This localActivity has been deleted in Strava</p>
                 </div>
               </div>
             </div>
           <% end %> */}
       
-          {activity.photos.length > 0 && (
+          {localActivity.photos.length > 0 && (
             <div className="mt-3">
               <div className="w-full flex h-40 overflow-x-auto">
-                {activity.photos.map(photo => {
+                {localActivity.photos.map(photo => {
                   if (!photo.url) { return }
 
                   return (
@@ -83,21 +81,21 @@ const ActivityPanel = ({ activity }) => {
           <div className="flex justify-between mt-3">
             <div>
               <div>
-                <span className="text-2xl">{activity.distance()}</span>
+                <span className="text-2xl">{localActivity.distance()}</span>
                 <span className="text-md">km</span>
               </div>
               <span className="block text-gray-500 text-xs">Distance</span>
             </div>
             <div>
               <div>
-                <span className="text-2xl">{activity.movingTime()}</span>
+                <span className="text-2xl">{localActivity.movingTime()}</span>
                 <span className="text-md">hours</span>
               </div>
               <span className="block text-gray-500 text-xs">Moving Time</span>
             </div>
             <div>
               <div>
-                <span className="text-2xl">{activity.totalElevationGain()}</span>
+                <span className="text-2xl">{localActivity.totalElevationGain()}</span>
                 <span className="text-md">m</span>
               </div>
               <span className="block text-gray-500 text-xs">Elevation</span>
@@ -108,26 +106,26 @@ const ActivityPanel = ({ activity }) => {
               <tbody className="bg-white">
                 <tr>
                   <td className="whitespace-nowrap pr-3 text-sm font-light">Elapsed Time</td>
-                  <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{activity.elapsedTime()} <span className="text-xs font-light">hours</span></td>
+                  <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{localActivity.elapsedTime()} <span className="text-xs font-light">hours</span></td>
                 </tr>
                 <tr>
                   <td className="whitespace-nowrap pr-3 text-sm font-light">Max Speed</td>
-                  <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{activity.maxSpeed()} <span className="text-xs font-light">km/hr</span></td>
+                  <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{localActivity.maxSpeed()} <span className="text-xs font-light">km/hr</span></td>
                 </tr>
                 <tr>
                   <td className="whitespace-nowrap pr-3 text-sm font-light">Average Speed</td>
-                  <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{activity.averageSpeed()}<span className="text-xs font-light">km/hr</span></td>
+                  <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{localActivity.averageSpeed()}<span className="text-xs font-light">km/hr</span></td>
                 </tr>
-                {activity.maxHeartrate() && (
+                {localActivity.maxHeartrate() && (
                   <tr>
                     <td className="whitespace-nowrap pr-3 text-sm font-light">Max Heartrate</td>
-                    <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{activity.maxHeartrate()} <span className="text-xs font-light">bpm</span></td>
+                    <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{localActivity.maxHeartrate()} <span className="text-xs font-light">bpm</span></td>
                   </tr>
                 )}
-                {activity.averageHeartrate() && (
+                {localActivity.averageHeartrate() && (
                   <tr>
                     <td className="whitespace-nowrap pr-3 text-sm font-light">Average Heartrate</td>
-                    <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{activity.averageHeartrate()} <span className="text-xs font-light">bpm</span></td>
+                    <td className="whitespace-nowrap px-2 text-sm font-medium text-gray-900">{localActivity.averageHeartrate()} <span className="text-xs font-light">bpm</span></td>
                   </tr>
                 )}
               </tbody>

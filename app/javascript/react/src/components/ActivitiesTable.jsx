@@ -14,7 +14,7 @@ const ActivitiesTable = ({ activities, selectedActivity }) => {
   }
 
   return (
-    <div className="h-[calc((100vh-48px)/3)] max-h-[calc((100vh-48px)/3)] relative">
+    <div className="min-h-[calc((100vh-48px)/3)] max-h-[calc((100vh-48px)/3)] relative">
       <div className="flex flex-col flex-none h-full">
         <div className="w-full flex bg-white">
           <div className="whitespace-nowrap overflow-hidden py-2 pl-4 pr-3 text-left text-xs md:text-sm font-medium text-gray-400 sm:pl-6 w-4/12">NAME</div>
