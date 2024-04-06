@@ -58,12 +58,9 @@ export default class Map {
   }
 
   addActivities(activities) {
-    console.log('adding', activities)
-    console.log('to', this.activities)
-    const activitiesToAdd = activities.concat(this.activities)
     this.removeAllActivities()
-    this.activities = activitiesToAdd
-    this.layer.addData(activitiesToAdd.map((activity) => { return activity.summaryGeoJSON() }))
+    this.activities = activities
+    this.layer.addData(activities.map((activity) => { return activity.summaryGeoJSON() }))
 
     const markerCluserGroup = L.markerClusterGroup({
       zoomToBoundsOnClick: false,
