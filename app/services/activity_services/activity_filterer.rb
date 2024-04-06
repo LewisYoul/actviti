@@ -1,7 +1,6 @@
 module ActivityServices
   class ActivityFilterer
-    DEFAULT_PAGE = 1
-    DEFAULT_PER_PAGE = 30
+    DEFAULT_LIMIT = 100
 
     def initialize(activities, params)
       @activities = activities
@@ -30,22 +29,10 @@ module ActivityServices
         @activities = @activities.joins(:geometry).where(geometry_table[:geometry].st_intersects(rgeo_bbox))
       end
 
-      Result.new(@activities.offset(offset).limit(per_page).includes(:photos), @activities.count, page, per_page)
+      Result.new(@activities.limit(DEFAULT_LIMIT).includes(:photos))
     end
 
     private
-
-    def offset
-      (page - 1) * per_page
-    end
-
-    def page
-      @page ||= @params[:page].to_i.positive? ? @params[:page].to_i : DEFAULT_PAGE
-    end
-
-    def per_page
-      @per_page ||= @params[:per_page].to_i.positive? ? @params[:per_page].to_i : DEFAULT_PER_PAGE
-    end
 
     def bbox
       @bbox ||= @params[:bbox] ? Bbox.new(@params[:bbox]) : nil
@@ -92,30 +79,10 @@ module ActivityServices
     end
 
     class Result
-      attr_reader :activities, :total_count, :per_page
+      attr_reader :activities
 
-      def initialize(activities, total_count, page, per_page)
-        @activities = activities.load
-        @activities_count = activities.size
-        @total_count = total_count
-        @page = page
-        @per_page = per_page
-      end
-
-      def from
-        @page == 1 ? 1 : (@page - 1) * @per_page
-      end
-
-      def to
-        ((@page - 1) * @per_page) + @activities_count
-      end
-
-      def previous_page?
-        @page != 1
-      end
-
-      def next_page?
-        (@activities_count == @per_page) && ((@activities_count * @page) < @total_count)
+      def initialize(activities)
+        @activities = activities
       end
     end
   end

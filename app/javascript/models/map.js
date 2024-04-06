@@ -7,7 +7,7 @@ export default class Map {
   constructor(id, options) {
     this.showMapPhotos = true
     this.options = options
-    this.map = L.map(id, { attributionControl: false, zoomSnap: 0, wheelPxPerZoomLevel: 2 }).setView([51.505, -0.09], 13)
+    this.map = L.map(id, { attributionControl: false, zoomSnap: 0, wheelPxPerZoomLevel: 2 }).setView([51.505, -0.09], 2)
     console.log('bbox', this.map.getBounds().toBBoxString())
     this.accessToken = 'pk.eyJ1IjoibGV3aXN5b3VsIiwiYSI6ImNqYzM3a3lndjBhOXQyd24zZnVleGh3c2kifQ.qVH2-BA02t3p62tG72-DZA';
     
@@ -132,6 +132,10 @@ export default class Map {
 
     this.removeAllActivities()
     this.addActivities([activityToKeep])
+  }
+
+  flyToBounds() {
+    this.map.flyToBounds(this.layer.getBounds(), { duration: 1 })
   }
 
   removeAllActivities() {

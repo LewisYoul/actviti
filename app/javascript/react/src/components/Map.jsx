@@ -10,7 +10,7 @@ const Map = () => {
   const [selectedActivity, setSelectedActivity] = React.useState(null)
   const [map, setMap] = React.useState()
   const [filters, setFilters] = React.useState({
-    bbox: "-0.20547866821289065,51.468766318140894,0.0254058837890625,51.54121061341155"
+    bbox: "-189.07650860722026,-57.75813080506425,211.2983710668277,80.18612440208034"
   })
   const prevSelectedActivityRef = React.useRef(null)
   const prevFiltersRef = React.useRef(null)
@@ -59,7 +59,7 @@ const Map = () => {
     if (selectedActivity) {
       map.highlightActivity(selectedActivity.id)
     }
-  }, [map, activities, selectedActivity])
+  }, [map, selectedActivity])
 
 
   const fetchActivities = () => {
