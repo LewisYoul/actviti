@@ -3,6 +3,7 @@ import { default as MapModel } from "../../../models/map";
 import Activity from "../../../models/activity";
 import ActivitiesTable from "./ActivitiesTable"
 import ActivityPanel from "./ActivityPanel"
+import RangeSlider from "./RangeSlider";
 import debounce from 'debounce'
 
 const Map = ({ currentUser }) => {
@@ -22,6 +23,7 @@ const Map = ({ currentUser }) => {
           activity.id === prevSelectedActivityRef.current?.id ? setSelectedActivity(null) : setSelectedActivity(activity)
         },
         onMove: (newBbox) => {
+          console.log('newBbox', newBbox)
           setFilters({ ...prevFiltersRef.current, bbox: newBbox })
         }
       })
@@ -96,6 +98,14 @@ const Map = ({ currentUser }) => {
     setFilters({ ...filters, name })
   }, 400)
 
+  const updateDistanceFilter = ({ min, max }) => {
+    setFilters({ ...filters, min_distance: min, max_distance: max })
+  }
+
+  const updateDurationFilter = ({ min, max }) => {
+    setFilters({ ...filters, min_duration: min, max_duration: max })
+  }
+
   return(
     <div className="flex flex-col flex-1">
       <div className="h-full w-full flex">
@@ -110,9 +120,28 @@ const Map = ({ currentUser }) => {
           <div className="overflow-auto md:overflow-visible w-full absolute mb-1 px-1 md:ml-1 md:mb-2 z-500 bottom-0 left-0 flex" id="filters">
             <input onChange={updateNameFilter} className="shadow-md whitespace-nowrap inline-flex items-center rounded-md justify-center px-2 py-1 border border-transparent shadow-sm bg-white hover:bg-gray-100 focus:outline-none"></input>
 
+            <RangeSlider
+              label="Distance"
+              min={0}
+              max={80}
+              step={2}
+              decimalPlaces={0}
+              unit="km"
+              onChange={updateDistanceFilter}
+            />
+
+            <RangeSlider
+              label="Duration"
+              min={0}
+              max={6}
+              step={0.5}
+              decimalPlaces={1}
+              unit="h"
+              onChange={updateDurationFilter}
+            />
             {/* <%= render partial: 'shared/map_filters/multi_select_filter', locals: { label: 'Type', filter_key: 'activity_types', items: @activity_types } %>
 
-            <button id="datepicker" class="ml-1 rounded-md shadow-md py-2 px-2 cursor-pointer bg-white text-xs">Date</button>
+            <button id="datepicker" className="ml-1 rounded-md shadow-md py-2 px-2 cursor-pointer bg-white text-xs">Date</button>
 
             <%= render partial: 'shared/map_filters/range_slider_filter', locals: { label: 'Distance', filter_key: 'distance', min: 0, max: 80, step: 2, decimal_places: 0, parser: 'km' } %>
             <%= render partial: 'shared/map_filters/range_slider_filter', locals: { label: 'Duration', filter_key: 'duration', min: 0, max: 6, step: 0.5, decimal_places: 1, parser: 'hours' } %>
