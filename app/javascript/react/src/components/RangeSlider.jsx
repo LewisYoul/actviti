@@ -3,10 +3,26 @@ import noUiSlider from 'nouislider';
 import wNumb from "wnumb";
 
 const RangeSlider = ({ label, min, max, step, decimalPlaces, unit, onChange}) => {
+  const rangeSliderRef = React.useRef()
   const [showPopover, setShowPopover] = React.useState(false)
   const [displayLabel, setDisplayLabel] = React.useState(label)
   const [minValue, setMinValue] = React.useState(min)
   const [maxValue, setMaxValue] = React.useState(max)
+
+  const handleOutsideClick = React.useCallback((event) => {
+    if (!showPopover) { return }
+    if (rangeSliderRef?.current?.contains(event.target)) { return }
+
+    setShowPopover(false)
+  }, [showPopover])
+
+  React.useEffect(() => {
+    document.addEventListener('click', handleOutsideClick)
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick)
+    }
+  }, [handleOutsideClick])
 
   React.useEffect(() => {
     const slider = document.getElementById(`${label}-slider`)
@@ -60,13 +76,13 @@ const RangeSlider = ({ label, min, max, step, decimalPlaces, unit, onChange}) =>
   }, [])
 
   return (
-    <div className="flex items-center bg-white rounded-md ml-2 shadow-md relative">
-      <div data-action="click->popover#toggle" className="flex items-center p-2 cursor-pointer">
+    <div ref={rangeSliderRef} className="flex items-center bg-white rounded-md ml-2 shadow-md relative">
+      <div className="flex items-center p-2 cursor-pointer">
         <button onClick={() => setShowPopover(!showPopover)} className="text-xs">{displayLabel}</button>
       </div>
       
       <div className={showPopover ? '' : 'hidden'}>
-        <div className="bg-white fixed md:absolute left-0 bottom-0 md:bottom-10 z-600 shadow-md md:rounded-md p-3 w-full md:w-48" data-action="rangeSlider:change->mapFilter#propagateRangeSliderFilterChange filterableList:change->mapFilter#propagateFilterChange">
+        <div className="bg-white fixed md:absolute left-0 bottom-0 md:bottom-10 z-600 shadow-md md:rounded-md p-3 w-full md:w-48">
           <div>
             <div className="flex justify-center">
               <label htmlFor="distance">{label}</label>
