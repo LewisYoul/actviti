@@ -4,6 +4,7 @@ import wNumb from "wnumb";
 
 const RangeSlider = ({ label, min, max, step, decimalPlaces, unit, onChange}) => {
   const [showPopover, setShowPopover] = React.useState(false)
+  const [displayLabel, setDisplayLabel] = React.useState(label)
   const [minValue, setMinValue] = React.useState(min)
   const [maxValue, setMaxValue] = React.useState(max)
 
@@ -23,6 +24,7 @@ const RangeSlider = ({ label, min, max, step, decimalPlaces, unit, onChange}) =>
     });
 
     slider.noUiSlider.on('slide', (values) => {
+      const [rawMinimum, rawMaximum] = values
       let [currentMinimum, currentMaximum] = values
 
       if (unit === 'h') {
@@ -38,6 +40,16 @@ const RangeSlider = ({ label, min, max, step, decimalPlaces, unit, onChange}) =>
 
       setMinValue(currentMinimum)
       setMaxValue(currentMaximum)
+
+      if (rawMinimum == min && rawMaximum == max) {
+        setDisplayLabel(label)
+      } else if (rawMinimum == min) {
+        setDisplayLabel(`< ${currentMaximum}${unit}`)
+      } else if (rawMaximum == max) {
+        setDisplayLabel(`> ${currentMinimum}${unit}`)
+      } else {
+        setDisplayLabel(`${currentMinimum} - ${currentMaximum}${unit}`)
+      }
     })
     
     slider.noUiSlider.on('change', (values) => {
@@ -50,7 +62,7 @@ const RangeSlider = ({ label, min, max, step, decimalPlaces, unit, onChange}) =>
   return (
     <div className="flex items-center bg-white rounded-md ml-2 shadow-md relative">
       <div data-action="click->popover#toggle" className="flex items-center p-2 cursor-pointer">
-        <button onClick={() => setShowPopover(!showPopover)} className="text-xs">{label}</button>
+        <button onClick={() => setShowPopover(!showPopover)} className="text-xs">{displayLabel}</button>
       </div>
       
       <div className={showPopover ? '' : 'hidden'}>
