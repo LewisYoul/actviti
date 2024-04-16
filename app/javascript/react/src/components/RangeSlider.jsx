@@ -124,10 +124,10 @@ const RangeSlider = ({ label, min, max, step, decimalPlaces, unit, onChange}) =>
   }, [])
 
   return (
-    <div ref={rangeSliderRef} className="flex items-center bg-white rounded-md ml-2 shadow-md relative">
-      <div className="flex items-center p-2 cursor-pointer">
-        <button onClick={() => setShowPopover(!showPopover)} className="text-xs">{displayLabel}</button>
-      </div>
+    <div ref={rangeSliderRef} className="flex bg-white rounded-md ml-2 shadow-md relative">
+      {/* <div className="flex items-center m-2 cursor-pointer"> */}
+        <button onClick={() => setShowPopover(!showPopover)} className="text-xs pr-2 pl-2 hover:bg-gray-50 rounded-md">{displayLabel}</button>
+      {/* </div> */}
 
       <div onClick={() => setShowPopover(!showPopover)} className={`${showPopover ? 'md:hidden' : 'hidden'} z-500 top-0 left-0 fixed bg-gray-500 opacity-50 h-screen w-screen`}>
         <div className="relative h-full w-full">
