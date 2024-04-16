@@ -7,9 +7,7 @@ export default class Map {
   constructor(id, options) {
     this.showMapPhotos = true
     this.options = options
-    this.map = L.map(id, { attributionControl: false, zoomSnap: 0, wheelPxPerZoomLevel: 2 }).setView([51.505, -0.09], 2)
-    console.log('bbox', this.map.getBounds().toBBoxString())
-    this.accessToken = 'pk.eyJ1IjoibGV3aXN5b3VsIiwiYSI6ImNqYzM3a3lndjBhOXQyd24zZnVleGh3c2kifQ.qVH2-BA02t3p62tG72-DZA';
+    this.map = L.map(id, { zoomSnap: 0, wheelPxPerZoomLevel: 2 }).setView([51.505, -0.09], 2)
     
     this.shouldFlytoActivities = true
     this.isFirstMove = true
@@ -26,13 +24,11 @@ export default class Map {
       })
     })
 
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 18,
       tileSize: 512,
-      id: 'mapbox/streets-v11',
       zoomOffset: -1,
-      accessToken: this.accessToken
     }).addTo(this.map);
 
     this.layer = L.geoJSON().addTo(this.map)
