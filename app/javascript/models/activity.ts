@@ -11,6 +11,8 @@ export default class Activity {
   layer: any;
   id: string;
   photos: Array<object>;
+  stravaId: string;
+
   constructor(activity: any, map: any) {
     this.activity = activity;
     this.map = map;
@@ -18,6 +20,7 @@ export default class Activity {
     this.layer.properties = { id: activity.id }
     this.id = activity.id
     this.photos = activity.photos
+    this.stravaId = activity.strava_id
   }
 
   update(activity: any) {

@@ -43,20 +43,18 @@ const ActivityPanel = ({ activity }) => {
       )}
       {localActivity && (
         <div>
-          <div className="flex items-start justify-between">
-            <div>
-              <span className="ml-2 text-sm text-gray-700">{localActivity.startDateShort()}</span>
-            </div>
-          </div>
           <div className="group flex items-center cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-            </svg>
-            <h2 className="group-hover:underline ml-1 text-lg font-medium text-gray-900" id="slide-over-title">
+            <h2 className="group-hover:underline text-xl font-medium text-gray-900" id="slide-over-title">
               {localActivity.name()}
             </h2>
           </div>
+          <div>
+            <span className="text-sm text-gray-700">{localActivity.startDateShort()}</span>
+          </div>
+          <a href={`https://www.strava.com/activities/${localActivity.stravaId}`} target="_blank" className="flex items-center mt-1">
+            <img className="h-4 w-4" src="/strava_icon.svg" title={`View ${localActivity.name()} on Strava`}/>
+            <span className="ml-2 text-sm strava-orange">View on Strava</span>
+          </a>
       
           {/* <% if @localActivity.deleted_in_strava? %>
             <div className="rounded-md bg-red-50 p-2 mt-2">
