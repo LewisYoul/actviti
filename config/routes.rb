@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     get :success, on: :collection
     get :upgrade, on: :member
   end
+  resources :contact, only: :index
 
   resources :groups, only: %i[create index destroy] do
     get :groupings, on: :collection
