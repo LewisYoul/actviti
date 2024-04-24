@@ -101,6 +101,12 @@
                   <%= link_to 'Upgrade to Pro', upgrade_plan_path(Plan.find_by(level: 'pro')), data: { turbo: false }, class: "mr-2 inline-flex items-center px-2 py-1 shadow-sm text-sm leading-4 font-bold rounded-md text-white bg-gradient-to-r from-pink-500 to-yellow-500 focus:outline-none" %>
                 <% end %>
 
+                <div>
+                  <a href="https://www.strava.com" target="_blank">
+                    <img src="/powered_by_strava.svg" class="w-20">
+                  </a>
+                </div>
+
                 <div data-controller="popover" class="relative">
                   <div data-action="click->popover#toggle" data-popover-target="trigger" class="cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

@@ -113,7 +113,14 @@ const Map = ({ currentUser }) => {
           {currentUser.plan.level === "free" && (
             <div className="absolute z-500 flex justify-center w-full">
               <div className="bg-white px-2 py-1 mt-4 text-sm rounded-md">
-                You're on the free plan which only allows you to view 30 activities from when you signed up. Upgrade to view all of your activities!
+                You're on the free plan which limits the activities you can see. Upgrade to view all of your activities!
+              </div>
+            </div>
+          )}
+          {activities.length >= 100 && (
+            <div className="absolute z-500 flex justify-center w-full">
+              <div className="bg-white px-2 py-1 mt-4 text-sm rounded-md">
+                There are more than 100 activities in this area. Try refining your search.
               </div>
             </div>
           )}
