@@ -28,11 +28,11 @@ const ActivitiesTable = ({ activities, selectedActivity }) => {
             activities.map(activity => {
               return (
                 <div key={activity.id} onClick={() => { toggleActivity(activity) }} className={`cursor-pointer ${activity.id === selectedActivity?.id ? 'bg-purple-200' : 'odd:bg-gray-50 hover:bg-purple-100'}`}>
-                  <div className="inline-block whitespace-nowrap overflow-hidden py-1.5 pl-4 pr-3 text-xs md:text-sm text-gray-900 sm:pl-6 w-4/12">{ activity.name() }</div>
-                  <div className="inline-block whitespace-nowrap overflow-hidden px-2 py-1.5 text-xs md:text-sm text-gray-900 w-3/12 md:w-2/12">{ activity.startDateShort() }</div>
-                  <div className="inline-block whitespace-nowrap overflow-hidden px-2 py-1.5 text-xs md:text-sm text-gray-900 text-left w-2/12">{ activity.type() }</div>
-                  <div className="inline-block whitespace-nowrap overflow-hidden px-2 py-1.5 text-xs md:text-sm text-left text-gray-900 w-2/12">{ activity.distance() }</div>
-                  <div className="hidden md:inline-block whitespace-nowrap overflow-hidden px-2 pr-4 py-1.5 text-xs md:text-sm text-left text-gray-900 w-2/12">{ activity.movingTime() }</div>
+                  <div className="inline-block whitespace-nowrap overflow-hidden pt-1.5 pl-4 pr-3 text-xs md:text-sm text-gray-900 sm:pl-6 w-4/12">{ activity.name() }</div>
+                  <div className="inline-block whitespace-nowrap overflow-hidden px-2 pt-1.5 text-xs md:text-sm text-gray-900 w-3/12 md:w-2/12">{ activity.startDateShort() }</div>
+                  <div className="inline-block whitespace-nowrap overflow-hidden px-2 pt-1.5 text-xs md:text-sm text-gray-900 text-left w-2/12">{ activity.type() }</div>
+                  <div className="inline-block whitespace-nowrap overflow-hidden px-2 pt-1.5 text-xs md:text-sm text-left text-gray-900 w-2/12">{ activity.distance() }</div>
+                  <div className="hidden md:inline-block whitespace-nowrap overflow-hidden px-2 pr-4 pt-1.5 text-xs md:text-sm text-left text-gray-900 w-2/12">{ activity.movingTime() }</div>
                 </div>
               )
             })
