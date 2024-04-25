@@ -4,6 +4,7 @@ import Activity from "../../../models/activity";
 import ActivitiesTable from "./ActivitiesTable"
 import ActivityPanel from "./ActivityPanel"
 import RangeSlider from "./RangeSlider";
+import Carousel from "./Carousel";
 import debounce from 'debounce'
 
 const Map = ({ currentUser }) => {
@@ -108,6 +109,7 @@ const Map = ({ currentUser }) => {
 
   return(
     <div className="flex flex-col flex-1">
+      <Carousel />
       <div className="h-full w-full flex">
         <div className="h-[calc(((100vh-48px)/3)*2)] w-full relative">
           {currentUser.plan.level === "free" && (
@@ -118,9 +120,10 @@ const Map = ({ currentUser }) => {
             </div>
           )}
           {activities.length >= 100 && (
-            <div className="absolute z-500 flex justify-center w-full">
+            <div className="absolute z-500 flex justify-center w-full px-6">
               <div className="bg-white px-2 py-1 mt-4 text-sm rounded-md">
-                There are more than 100 activities in this area. Try refining your search.
+                <p className="text-center">There are more than 100 activities in this area. <span className="hidden md:inline">Try refining your search.</span></p>
+                <p className="text-center md:hidden">Try refining your search.</p>
               </div>
             </div>
           )}

@@ -25,6 +25,14 @@ const ActivityPanel = ({ activity }) => {
     window.dispatchEvent(event)
   }
 
+  const showCarousel = (url) => {
+    const urls = localActivity.photos.map(photo => photo.url)
+    const event = new CustomEvent('openCarousel', { detail: { url, urls } })
+
+    window.dispatchEvent(event)
+  }
+
+
   return (
     <div className="h-full overflow-auto px-6 py-6 bg-white z-500 w-[400px] max-w-[400px]">
       <button onClick={deselectActivity} className="absolute right-6 text-gray-400 hover:text-gray-500">
@@ -73,7 +81,7 @@ const ActivityPanel = ({ activity }) => {
                   if (!photo.url) { return }
 
                   return (
-                    <img key={`photo-${photo.id}`} src={photo.url} className="cursor-pointer flex-none object-cover w-40 h-40 hover:opacity-90 inline" />
+                    <img onClick={() => {showCarousel(photo.url)}} key={`photo-${photo.id}`} src={photo.url} className="cursor-pointer flex-none object-cover w-40 h-40 hover:opacity-90 inline" />
                   )
                 })}
                   {/* <% next unless photo.url %>
