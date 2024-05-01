@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     get :import, on: :collection
     put :select, on: :member
     put :deselect, on: :collection
+
+    resources :activity_groups, shallow: true
   end
   resources :plans do
     get :success, on: :collection

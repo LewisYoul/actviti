@@ -12,6 +12,7 @@ export default class Activity {
   id: string;
   photos: Array<object>;
   stravaId: string;
+  activityGroups: Array<object>;
 
   constructor(activity: any, map: any) {
     this.activity = activity;
@@ -21,6 +22,7 @@ export default class Activity {
     this.id = activity.id
     this.photos = activity.photos
     this.stravaId = activity.strava_id
+    this.activityGroups = activity.activity_groups
   }
 
   update(activity: any) {

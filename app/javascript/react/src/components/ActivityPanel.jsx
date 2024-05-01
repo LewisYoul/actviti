@@ -32,6 +32,13 @@ const ActivityPanel = ({ activity }) => {
     window.dispatchEvent(event)
   }
 
+  const openGroupModal = () => {
+    console.log('localActivity', localActivity)
+    const event = new CustomEvent('openModal', { detail: { activity: localActivity } })
+
+    window.dispatchEvent(event)
+  }
+
 
   return (
     <div className="h-full overflow-auto px-6 py-6 bg-white z-500 w-[400px] max-w-[400px]">
@@ -143,6 +150,20 @@ const ActivityPanel = ({ activity }) => {
                 )}
               </tbody>
             </table>
+          </div>
+
+          <div>
+            <div className="hidden fixed w-screen h-screen bg-gray-800 bg-opacity-75 top-0 left-0 z-1100">
+              <div className="flex justify-center w-full h-full">
+                <div className="relative bg-white rounded-md bg-opacity-100 w-[720px] h-[525px] mt-6">
+                  <svg className="w-6 h-6 text-gray-600 hover:text-gray-400 absolute top-0 right-0 cursor-pointer w-12 h-12 pr-4 pt-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <button onClick={openGroupModal}className="font-base inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Add +</button>
           </div>
       
           {/* <h1 className="mt-3">Groups</h1>

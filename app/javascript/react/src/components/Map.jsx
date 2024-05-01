@@ -5,6 +5,7 @@ import ActivitiesTable from "./ActivitiesTable"
 import ActivityPanel from "./ActivityPanel"
 import RangeSlider from "./RangeSlider";
 import Carousel from "./Carousel";
+import Modal from "./Modal";
 import debounce from 'debounce'
 
 const Map = ({ currentUser }) => {
@@ -110,6 +111,7 @@ const Map = ({ currentUser }) => {
   return(
     <div className="flex flex-col flex-1">
       <Carousel />
+      <Modal />
       <div className="h-full w-full flex">
         <div className="h-[calc(((100vh-48px)/3)*2)] w-full relative">
           {currentUser.plan.level === "free" && (

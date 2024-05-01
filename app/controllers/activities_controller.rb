@@ -41,7 +41,7 @@ class ActivitiesController < ApplicationController
       format.turbo_stream
       format.html
       format.json do
-        render json: @filter_result.activities, each_serializer: ActivitySerializer
+        render json: @filter_result.activities, each_serializer: ActivityListItemSerializer
       end
     end
   end
